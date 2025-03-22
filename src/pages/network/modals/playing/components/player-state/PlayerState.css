@@ -1,0 +1,25 @@
+
+.player-state {
+    font-size: x-small;
+}
+
+.player-state .score {
+    padding: .1em .3em;
+    border: 2px solid gray;}
+
+.player-state .avatar {
+    border-radius: 50%;
+    /* background-color: red; */
+    height: 4em;
+    overflow: hidden;
+    aspect-ratio: 1;
+}
+
+.player-state .name-and-rank {
+    border: 2px solid gray;
+}
+.player-state .rank {
+    background-color: yellowgreen;
+    padding: .1em .3em;
+    border-radius: .3em;
+}

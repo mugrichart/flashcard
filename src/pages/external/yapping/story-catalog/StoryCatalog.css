@@ -1,0 +1,25 @@
+.side-wide.story-catalog {
+    align-items: center;
+    gap: 3em;
+}
+
+.side-wide .titles {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    display: flex;
+    max-height: 15em;
+}
+
+.side-wide .story--span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10em !important;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+}
+
+.story .title {
+    padding: .5em 1em;
+    margin: 1em;
+}

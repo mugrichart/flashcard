@@ -1,0 +1,30 @@
+.catalog {
+    padding: .5em;
+    width: 95vw;
+    max-height: 80vh;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 2em; /* Even spacing between items */
+    overflow: auto;
+}
+
+.catalog .game {
+    padding: 1em;
+    border: 2px dotted lightblue;
+    box-sizing: border-box;
+}
+
+.catalog .game > img {
+    width: 100%;
+    margin-block: .5em;
+    box-shadow: 0 .5em 1em rgb(95, 97, 97);
+    border-radius: 1em;
+}
+
+.catalog .game > p {
+    display: flex;
+    justify-content: space-between;
+    padding-top: .5em;
+    text-align: left;
+    font-weight: 600;
+}

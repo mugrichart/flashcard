@@ -1,0 +1,39 @@
+
+.Input {
+    padding: 1em 2.5em;
+    width: 90%;
+    border: 1.5px solid rgba(255, 255, 255, .5);
+    border-radius: 10px;
+    background-color: #8ab4c77d;
+    font-size: medium;
+    outline: none;
+    margin: 5px;
+    color: #5b7784;
+}
+
+.Input:focus {
+    border: 2px solid rgba(255, 255, 255, 1);
+}
+
+/* .Input-icon {
+    position: absolute;
+    left: 50px;
+} */
+
+/* #Input-username-icon {
+    position: absolute;
+    left: 50px;
+    top: 104px;
+}
+
+#Input-email-icon {
+    position: absolute;
+    left: 50px;
+    top: 165px;
+}
+
+#Input-password-icon {
+    position: absolute;
+    left: 50px;
+    top: 230px;
+} */

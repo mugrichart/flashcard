@@ -1,0 +1,12 @@
+  
+  .game-button {
+    padding: .2em;
+    cursor: pointer;
+  }
+  .game-button div {
+    border: 1px solid gray;
+    padding: .5em 1em;
+    font-size: medium;
+    font-weight: bold;
+    
+  }

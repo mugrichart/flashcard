@@ -1,0 +1,24 @@
+.card {
+    background-color: #9BC5CB;
+    box-shadow: 0 0 3px rgb(113, 156, 196);
+    padding: 1em;
+    min-width: min(500px, 80vw);
+}
+
+.card > h3 {
+    color: #1e2d64;
+    text-align: start;
+    margin: 1em;
+    margin-top: 0;
+}
+.card > div {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.card > div > * {
+    text-wrap: nowrap;
+    display: block;
+}

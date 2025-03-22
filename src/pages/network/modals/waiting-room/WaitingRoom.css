@@ -1,0 +1,7 @@
+
+.waiting-room {
+    min-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}

@@ -1,0 +1,67 @@
+.story-onboarding {
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+/* .story-onboarding section .summary {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.story-onboarding section p {
+    margin-left: 1em;
+} */
+
+/* .story-onboarding section section {
+    padding: .3em 1em;
+    text-align: start;
+    position: absolute;
+    z-index: 2;
+    max-width: 300px;
+    background-color: beige;
+    border: 1px solid #345C70;
+    margin-top: .5em;
+    transition: block 1s ease-in-out;
+} */
+
+
+/* .story-onboarding .ai-assistant {
+    font-weight: bolder;
+    display: flex;
+    cursor: pointer;
+    background: radial-gradient( white, rgb(245, 245, 172));
+    padding: .5em 1em;
+    border: 1px solid skyblue;
+    border-radius: 2em;
+    width: fit-content;
+    transition: width 700ms ease-in-out;
+}
+
+.story-onboarding .ai-assistant:hover {
+    background: radial-gradient( white, rgb(245, 245, 150));
+} */
+
+.story-onboarding > span {
+    text-align: left;
+}
+
+.story-onboarding .title {
+    padding: .5em 1em;
+    margin-block: 1em;
+    border: none;
+    font-size: medium;
+    border-radius: .3em;
+    width: max(40dvw, 300px);
+    box-shadow: .1em .05em .1em gray;
+    display: block;
+}
+
+.story-onboarding textarea {
+    display: block;
+    width: max(40dvw, 300px);
+    border: none;
+    box-shadow: .1em .05em .1em gray;
+
+}

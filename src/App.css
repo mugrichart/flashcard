@@ -1,0 +1,37 @@
+.App {
+  text-align: center;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-button-1 {
+    padding: .5em 1em;
+    margin: .5em;
+    cursor: pointer;
+    border-radius: .5em;
+    color: #345C70;
+    font-size: x-large;
+    background-color: #779DAF;
+    display: flex; justify-content: center; align-items: center;
+    border: 1px groove #72a0b76f;
+    box-shadow: 0 0 5em rgba(255, 255, 255, 0.3);
+}
+
+.custom-button-1:hover {
+  color: lightblue;
+  box-shadow: 0 0 10px rgb(210, 231, 241);
+}
+
+main {
+  box-shadow: 0 -3px 0 #b0c3c4;
+  background-color: #E0F5F8;
+  flex: 1;
+  overflow: hidden;
+}
+
+footer {
+  background-color: #C0D7DA;
+  height: 2.5em;
+}

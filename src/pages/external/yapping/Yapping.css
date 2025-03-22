@@ -1,0 +1,305 @@
+.Yapping {
+    display: flex;
+    gap: 1.5em;
+    width: 95dvw;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5em !important;
+}
+
+.story {
+    flex: 1 1 auto;
+    height: 50%;
+}
+
+.side > div:first-child > h1, .side > div:first-child > h3 {
+    color: #345C70;
+    /* margin-bottom: .8em; */
+}
+
+.side > div:first-child > p {
+    font-size: medium;
+}
+
+.side {
+    display: flex;
+    flex-direction: column;
+    max-height: 90dvh;
+    gap: 1em
+}
+
+.side-pool {
+    max-width: 90vw;
+    overflow: auto;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.Yapping--info {
+    position: absolute;
+    min-width: 500px;
+    z-index: 2;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    padding: 1em 3em;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
+}
+
+.Yapping--summary {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1em;
+    background-color: rgb(154, 232, 232);
+    display: flex; flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+.Yapping--button {
+    padding: .5em 2em;
+    background-color: #345C70;
+    border: none;
+    border-radius: 1em;
+    color: white;
+    cursor: pointer;
+}
+
+.Yapping--info-warning { background-color: rgb(245, 224, 149) }
+.Yapping--info-success { background-color: rgb(193, 246, 86) }
+.Yapping--info-info { background-color: rgb(108, 173, 244) }
+.Yapping--info-danger { background-color: rgb(250, 115, 105) }
+
+h1 { font-size: xx-large;}
+
+textarea {
+    padding: 1em;
+}
+
+.story {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    flex: 1;
+}
+
+#text-container {
+    text-align: start;
+    /* margin-block: 1em; */
+    padding: 1em;
+    background-color: beige;
+    /* width: min(90vw, 1000px); */
+    width: 80ch;
+    word-wrap: normal;
+    overflow-wrap: normal;
+    white-space: normal;
+    border: 1px solid #345C70;
+    border-radius: 1em;
+    line-height: 2em;
+    font-weight: 450;
+    font-size: 1.1em;
+    overflow: auto;
+    flex: 1 1 auto;
+}
+
+textarea {
+    width: 90vw;
+    height: 70px;
+    border-radius: .5em;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #345C70;
+    position: relative;
+    /* margin-top: 2em; */
+}
+
+.side span.story--span {
+    padding: .5em 1em;
+    background-color: #345C70;
+    color: white;
+    border-radius: 1em;
+    cursor: pointer;
+}
+
+.word-pool span {
+    border: 1px solid rgba(184, 49, 28, .3);
+    padding: .2em 1em;
+    color: rgb(184, 49, 28);
+    border-radius: 1em;
+    cursor: pointer;
+    text-wrap: nowrap;
+}
+
+.word-pool.selected span {
+    border: 1px solid rgba(24, 213, 24, 0.5);
+    color: green;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px) rotate(-5deg); }
+    40% { transform: translateX(5px) rotate(5deg); }
+    60% { transform: translateX(-5px) rotate(-5deg); }
+    80% { transform: translateX(5px) rotate(5deg); }
+    100% { transform: translateX(0); }
+  }
+
+.word-pool .right-word:active { background-color: green; color: white}
+
+.word-pool span:active  {
+    background-color: red; color: white;
+    animation: shake .5s ease-out
+}
+
+.side span:hover {
+    /* background-color: rgb(184, 49, 28); */
+    /* border: px solid whitesmoke; */
+    /* color: whitesmoke; */
+    box-shadow: 0 0 .1em inset;
+}
+
+.story > div {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 3em;
+}
+
+.Yapping .submit, .story label {
+    cursor: pointer;
+}
+.Yapping .submit {
+    padding: .2em 1em;
+    background-color: #345C70;
+    color: white;
+    border: none;
+    border-radius: 1em;
+}
+
+.story > div > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 2em;
+}
+
+
+.story #attempt-p {
+    border: 1px solid;
+    border-radius: 1em;
+    padding: 1em;
+    /* margin: 1em; */
+}
+
+.story input.attempt-input {
+    /* margin: .2em; */
+    padding: .5em;
+    border: 1px solid;
+    border-radius: .5em;
+    background-color: rgb(242, 242, 227);
+}
+
+.side-pool::-webkit-scrollbar, textarea::-webkit-scrollbar, #text-container::-webkit-scrollbar, article.draft-story::-webkit-scrollbar {
+    width: 5px; /* Set your desired width */
+    height: 5px;
+}
+  
+.side-pool::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb, #text-container::-webkit-scrollbar-thumb, article.draft-story::-webkit-scrollbar-thumb {
+    background-color: rgb(66, 157, 185);
+    border-radius: 6px; /* Set half of the scrollbar width to create a circular thumb */
+}
+  
+  /* Optional: You can style the track to add some visual cues */
+.side-pool::-webkit-scrollbar-track, textarea::-webkit-scrollbar-track, #text-container::-webkit-scrollbar-track, article.draft-story::-webkit-scrollbar-track {
+    background-color: #cce1e4; /* Set your desired track color */
+}
+
+@media (max-width: 719px) {
+    /* .Yapping {
+        flex-direction: column;
+        align-items: center;
+        gap: 1em;
+    } */
+
+    .side > div:first-child {
+        font-size: small;
+    }
+
+    .side .side-pool {
+        /* flex-direction: row; */
+        max-width: 90vw;
+        /* overflow-x: auto; */
+        font-size: small;
+    }
+
+    .Yapping .story {
+        height: 70%;
+    }
+  }
+
+.story article.draft-story {
+    width: min(700px, 90vw); /* Define container width */
+    line-height: 2.3; /* Adjust line height for readability */
+    background-color :#f7eee461; 
+    padding: 1em 2em;
+    /* border: 1px solid #f7ce22; */
+    /* box-shadow: 0 0 1em #555; */
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1 1 auto;
+    text-align: start;
+    font-size: 1.1em !important;
+    /* text-indent: 5em; */
+}
+
+.story article.draft-story .draft-sentence{
+    display: inline; 
+    background-color: #e7eaf6; /* Optional: Different background for spans */
+    margin-right: .5em;
+    border-radius: .3em;
+    padding: .2em;
+    box-decoration-break: clone;
+    font-family: Tahoma, sans-serif;
+    white-space: pre-wrap;
+}
+.story article.draft-story .draft-sentence.new-line {visibility: hidden}
+.story article.draft-story input.draft-sentence {
+    font-size: inherit;
+    color: inherit;
+    field-sizing: content;
+    border: none;
+    outline: none;
+}
+.story article.draft-story span.draft-sentence input {
+    font-size: inherit;
+    color: inherit;
+    field-sizing: content;
+}
+.story article.draft-story span.draft-sentence input:focus {
+    animation: glow 1s  forwards infinite;
+}
+.story article.draft-story span.draft-sentence input::selection {
+    background-color: lightblue;
+}
+
+.story article.draft-story .draft-sentence:nth-of-type(odd) {
+    background: #c1dddd;
+}
+.story article.draft-story .draft-sentence:nth-of-type(even) {
+    background: #f5ddcf;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 .2em #f7ce22;
+    }
+    50% {
+        box-shadow: 0 0 1em orange;
+    }
+    100% {
+        box-shadow: 0 0 .2em #f7ce22;
+    }
+}

@@ -1,0 +1,165 @@
+.common-card {
+    width: min(600px, 90vw);
+    /* margin: auto; */
+    background-color: #9BC5CB;
+    padding: .1em .1em;
+}
+
+.common-card * {
+    color: #E0F5F8;
+    font-size: large;
+    font-weight: 500;
+}
+
+.common-head > div {
+    color: #345C70;
+    padding: .5em 2em;
+}
+.common-head .label1 {
+    font-weight: bolder;
+}
+.sticks, .sticks {
+    margin: 10px 20px;
+    border-radius: 2px;
+    background-color: #345C70;
+    overflow-x: hidden;
+}
+
+.sticks > div, .sticks > div {
+    width: 0;
+    height: 100%;
+    border-radius: 2px;
+    background-color: #E0F5F8;
+    color: rgb(255, 102, 0);
+    text-align: center;
+}
+
+.common-main {
+    border-radius: 1em;
+    /* background-color: #6E95A8; */
+    margin-bottom: 1em;
+    padding: 1em;
+}
+
+.common-main > .top {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: transparent;
+}
+
+.common-main > .top > div {
+    padding: 5px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.common-main .arrow {
+    display: flex;
+    background-color: transparent;
+    cursor: pointer;
+    margin: auto 0;
+    border: 5px solid #345c7039;
+}
+
+.common-main .arrow > * {
+    font-size: 1.5rem;
+}
+
+.common-main .arrow:hover {
+    font-size: xx-large;
+    box-shadow: 0 0 10px lightblue;
+}
+
+.common-main > .middle {
+    scroll-margin: 1em;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .5em;
+}
+
+.common-main .middle > div {
+    font-size: large;
+    border-radius: .3em;
+    text-align: left;
+    padding: .3em 1em;
+    cursor: pointer;
+    background-color: rgba(52, 92, 112, .8);
+}
+
+.common-main .middle > div:hover {
+    background-color: #345C70;
+}
+
+.option-incorrect {
+    background-color: red;
+}
+
+.option-correct {
+    background-color: green;
+}
+
+
+/* Keyframes for entering and exiting (right swipe) */
+@keyframes enteringFromLeft {
+    0% {
+        transform: translate(-50%, -50%); 
+        opacity: 0;
+    }
+    100% {
+        transform: translate(0); 
+        opacity: 1;
+    }
+}
+
+@keyframes exitingToRight {
+    0% {
+        transform: scale(1); 
+        opacity: 1;
+    }
+    100% {
+        transform: scale(.5); 
+        opacity: .5;
+    }
+}
+
+/* Keyframes for entering and exiting (left swipe) */
+@keyframes enteringFromRight {
+    0% {
+        transform: translateX(50%); 
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0); 
+        opacity: 1;
+    }
+}
+
+@keyframes exitingToLeft {
+    0% {
+        transform: translateX(0); 
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-50%); 
+        opacity: 0;
+    }
+}
+
+/* Bouncy effect with cubic-bezier for entering/exiting cards */
+.card-entering-left {
+    animation: enteringFromLeft .5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.card-exiting-right {
+    animation: exitingToRight .5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.card-entering-right {
+    animation: enteringFromRight .9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.card-exiting-left {
+    animation: exitingToLeft .9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}

@@ -1,0 +1,162 @@
+.card-learn {
+    max-height: 90dvh;
+    width: min(500px, 92vw);
+    margin: auto;
+    background-color: #9BC5CB;
+    padding: 2em;
+    text-align: start;
+    font-size: large;
+    overflow: auto;
+}
+
+.card-learn--top {
+    display: flex;
+    justify-content: space-between;
+    font-size: x-large;
+    margin-bottom: 1.5em;
+    color: rgba(0, 115, 255, 0.758);
+}
+
+
+.card-learn--word {
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+.card-learn--word::first-letter {
+    text-transform: uppercase;
+}
+
+.card-learn--descr > li {
+    list-style-type: disc;
+    padding-inline: 1em;
+}
+
+.card-learn--related {
+    max-height: 100px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    column-gap: 1em;
+    padding-inline: 1em;
+}
+
+.card-learn--related > li {
+    color: rgba(0, 110, 255, 0.61);
+    cursor: pointer;
+}
+.card-learn--related > li:hover {
+    text-decoration: underline;
+}
+
+.card-learn--body {
+    display: flex;
+    gap: 10px
+}
+
+.card-learn--content {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.card-learn--content::-webkit-scrollbar {
+    width: 5px; /* Set your desired width */
+  }
+  
+  .card-learn--content::-webkit-scrollbar-thumb {
+    background-color: rgb(97, 138, 151);
+    border-radius: 6px; /* Set half of the scrollbar width to create a circular thumb */
+  }
+  
+  /* Optional: You can style the track to add some visual cues */
+  .card-learn--content::-webkit-scrollbar-track {
+    background-color: #cce1e4; /* Set your desired track color */
+  }
+
+.card-learn i {
+    display: flex;
+    margin: auto;
+    border-radius: 50%;
+    font-size: xx-large;
+    background-color: lightblue;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgb(46, 72, 82)
+}
+
+
+.card-learn--info {
+    text-align: center;
+    color: white;
+}
+
+@media (max-width: 420px) {
+    .card-learn {
+        max-width: 95vw;
+    }
+    /* .card-learn i {
+        width: 0;
+    } */
+}
+
+/* Keyframes for entering and exiting (right swipe) */
+@keyframes enteringFromLeft {
+    0% {
+        transform: translateX(-100%); 
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0); 
+        opacity: 1;
+    }
+}
+
+@keyframes exitingToRight {
+    0% {
+        transform: translateX(0); 
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%); 
+        opacity: 0;
+    }
+}
+
+/* Keyframes for entering and exiting (left swipe) */
+@keyframes enteringFromRight {
+    0% {
+        transform: translateX(100%); 
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0); 
+        opacity: 1;
+    }
+}
+
+@keyframes exitingToLeft {
+    0% {
+        transform: translateX(0); 
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%); 
+        opacity: 0;
+    }
+}
+
+/* Bouncy effect with cubic-bezier for entering/exiting cards */
+.card-entering-left {
+    animation: enteringFromLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.card-exiting-right {
+    animation: exitingToRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.card-entering-right {
+    animation: enteringFromRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.card-exiting-left {
+    animation: exitingToLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}

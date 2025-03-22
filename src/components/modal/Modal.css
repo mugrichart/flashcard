@@ -1,0 +1,44 @@
+
+
+.modal {
+    border-radius: 2em;
+    position: fixed;
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: -1em -1em 1em rgb(0, 0, 0, .2);
+}
+
+.modal > div {
+    /* min-height: 200px; */
+    /* margin: auto; */
+    background-color: #9BC5CB;
+    /* padding: 1.5em; */
+}
+  
+.modal:before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    transform: scale(20, 20);
+    z-index: -1;
+    background-color: navajowhite;
+}
+  
+.modal .cancel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: xx-large;
+    color: red;
+    cursor: pointer;
+    z-index: 6;
+}
+  
+.modal .cancel:hover {
+    transform: scale(1.1);
+}

@@ -1,0 +1,149 @@
+.card-add-manual {
+    background-color: #9BC5CB;
+    color: #345C70;
+    font-size: large;
+    font-weight: 500;
+    padding: 10px 0;
+    max-width: 90vw;
+    max-height: 95vh;
+    overflow: hidden;
+}
+
+
+.card-add-manual form .variation {
+    max-height: 40vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card-add-manual form .variation::-webkit-scrollbar {
+    width: 5px; /* Set your desired width */
+  }
+  
+  .card-add-manual form .variation::-webkit-scrollbar-thumb {
+    background-color: rgb(97, 138, 151);
+    border-radius: 6px; /* Set half of the scrollbar width to create a circular thumb */
+  }
+  
+  /* Optional: You can style the track to add some visual cues */
+  .card-add-manual form .variation::-webkit-scrollbar-track {
+    background-color: #cce1e4; /* Set your desired track color */
+  }
+
+.card-add-manual > form > .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 10px;
+    gap: 1em;
+    margin-right: 30px;
+}
+
+.card-add-manual > form > .buttons > button, .card-add-manual > form > .buttons > input {
+    padding: 10px;
+    font-size: large;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    
+}
+
+.card-add-manual > form > .buttons > button:hover, .card-add-manual > form > .buttons > input:hover{
+    background: linear-gradient(180deg, #345C70, white);
+    color: white;
+}
+
+.card-add-manual > form, .card-add-manual > form > section  {
+    flex-grow: 1;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-add-manual > form > section > div {
+    min-height: 50px;
+    margin: 5px;
+    display: flex;
+    gap: 1em;
+    /* justify-content: space-between; */
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+
+.card-add-manual > form .labels {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.card-add-manual > form label {
+    font-size: large;
+    color: #345C70;
+    text-wrap: nowrap;
+}
+.card-add-manual > form  input {
+    width: 300px;
+    border-radius: 20px;
+    font-size: large;
+    border: none;
+    padding: 5px 10px;
+    background-color: #345C70;
+    color: #E0F5F8;
+    position: relative;
+}
+
+.card-add-manual > form .labels > label{
+    padding: 5px 10px;
+    margin-inline: 5px;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.card-add-manual > form .alertEmpty {
+    border: 2px solid red;
+}
+
+.card-add-manual > form .plus {
+    background-color: black;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    color: #9BC5CB;
+    font-size: 30px;
+    line-height: 1.5rem;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+}
+
+/* media queries */
+/* @media (max-width: 420px) {
+    .card-add-manual {
+        max-width: 95vw;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-add-manual > form {
+        margin: 0 10px;
+        justify-content: start;
+    }
+    .card-add-manual > form input {
+        margin-left: 0;
+        margin-right: 30px;
+       
+    }
+
+    .card-add-manual > form label {
+        display: none;
+    }
+
+} */

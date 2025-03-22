@@ -1,0 +1,44 @@
+.new-deck-page {
+    background-color: #9BC5CB;
+    color: #E0F5F8;
+    padding: 10px;
+}
+
+.new-deck-page > h1 {
+    width: 100%;
+}
+
+
+.new-deck-page > input {
+    border-radius: 20px;
+    border: none;
+    height: 60px;
+    margin: 10px 0;
+    background-color: #345C70;
+    font-size: x-large;
+    font-weight: 500;
+    color: #E0F5F8;
+    padding-left: 20px;
+    box-shadow: 0 0 .2em white inset;
+}
+
+.new-deck-page .select-container {
+    color: #345C70;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: large;
+}
+
+.new-deck-page .buttons div {
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+.deck--alert {
+    color: rgba(255, 0, 0, 0.658);
+}
+
+.deck--hide {
+    display: none;
+}

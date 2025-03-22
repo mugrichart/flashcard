@@ -1,0 +1,36 @@
+.Guided-learn {
+    max-height: 90dvh;
+    width: min(500px, 92vw);
+    margin: auto;
+    background-color: #9BC5CB;
+    padding: 1em 2em;
+    text-align: start;
+    font-size: large;
+    overflow: auto;
+}
+
+.Guided-learn > h2 {
+    color: rgba(0, 115, 255, 0.758);
+}
+
+.Guided-learn h3, h4 {
+    color: #345C70;
+    margin: 1em 0 .2em 0;
+}
+
+.Guided-learn .details {
+    display: flex;
+    flex-direction: column;
+    gap: .3em;
+}
+
+.Guided-learn .continue-btn-div {
+    margin-top: 1em;
+    display: flex;
+    width: 100%;
+    justify-content: right;
+}
+
+.Guided-learn > div:last-child {
+    text-align: center;
+}

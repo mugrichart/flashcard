@@ -1,0 +1,48 @@
+
+.more {
+    flex: 1;
+    height: 100%;
+    overflow-y: hidden;
+    padding: 2em;
+    color: #23556c;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 5em;
+}
+
+article {
+    height: 400px;
+    width: 400px;
+    padding: 1em;
+    background-color: rgba(0 , 0 , 0, 0.1);
+    box-shadow: 0 0 50px rgba(0 , 0 , 0, 0.3);
+    font-size: x-large;
+}
+
+article p {
+    width: 100%;
+    line-height: 150%;
+}
+
+article button {
+    background-color: #86a8b8;
+    border: none;
+    width: fit-content;
+    margin: 50px auto;
+    padding: .5em 1em;
+    font-size: x-large;
+    border-radius: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+article button:hover {
+    background-color: rgb(134, 168, 184, .8);
+}
+
+@media (max-width: 719px) {
+    .more {
+        padding: 1em;
+    }
+}
