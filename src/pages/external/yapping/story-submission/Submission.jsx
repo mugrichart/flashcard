@@ -3,7 +3,7 @@ import "./Submission.css"
 import { Button } from "@mui/material"
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
-const Submission = ({mode , isLeadAuthor, title, setTitle, story, checked, setChecked, handleSubmit}) => {
+const Submission = ({mode , isLeadAuthor, title, setTitle, story, checked, setChecked, handleSubmit, setActivity}) => {
   const existingTitle = useRef(title)
   return (
     <div className="submission">
@@ -37,7 +37,7 @@ const Submission = ({mode , isLeadAuthor, title, setTitle, story, checked, setCh
         <Button
         className="submission--btn"
         variant="contained" color='primary' disableElevation
-        onClick={handleSubmit}
+        onClick={() => isLeadAuthor ? setActivity("uploading") : handleSubmit()}
       >
         Submit Story
       </Button>

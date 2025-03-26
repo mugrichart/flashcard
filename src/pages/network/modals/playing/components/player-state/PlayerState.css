@@ -9,10 +9,10 @@
 
 .player-state .avatar {
     border-radius: 50%;
-    /* background-color: red; */
-    height: 4em;
-    overflow: hidden;
+    background-color: red;
+    width: 4em;
     aspect-ratio: 1;
+    overflow: hidden;
 }
 
 .player-state .name-and-rank {

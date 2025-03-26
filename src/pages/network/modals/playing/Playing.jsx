@@ -2,7 +2,7 @@ import "./Playing.css"
 
 import Counter from "./utils/Counter";
 
-import { initializeWebSocketConn } from "../../../../api/quiz-game/websocket"
+import WebSocketService from "../../../../api/game/websocket"
 
 import WaitingRoom from "../waiting-room/WaitingRoom";
 
@@ -17,105 +17,80 @@ import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const Playing = () => {
-    const socketHasInitRef = useRef(false)
-    const socketHasSetup = useRef(false)
-    const [socket, setSocket ] = useState(null)
+    
     const { _id: deckId, deckName, words, learning:deck } = useSelector(state => state.deck.openDeck)
     const [searchParams, setSearchParams] = useSearchParams()
     const [{userId: playerID, username: playerName, avatar}] = useState(JSON.parse(localStorage.getItem('user')));
     const [ gameID, setGameID ] = useState(searchParams.get("gameID"))
     const [ isCreator ] = useState(searchParams.get("isCreator") === "true")
     const [randomGame ] = useState(searchParams.get("mode") === "random")
-    const [typeOfGame, setTypeOfGame] = useState(searchParams.get("typeOfGame") || 'quiz') // quiz | story
+    const [typeOfGame, setTypeOfGame] = useState(searchParams.get("typeOfGame")) // quiz | story | chat
     const [players, setPlayers] = useState([])
     const [error, setError] = useState(null)
     const [status, setStatus] = useState(isCreator ? "creating" : "joining") // creating | joining | waiting | countdown | playing
-    const [storyGameUtils, setStoryGameUtils] = useState({activity: "onboarding", words: deck.words?.map(wordObj => wordObj.word) || []})
+    const [storyGameUtils, setStoryGameUtils] = useState({activity: "onboarding", words: deck?.words?.map(wordObj => wordObj.word) || []})
 
     useEffect(() => {
-      if (socketHasInitRef.current) return;
-      setSocket(initializeWebSocketConn());
-      socketHasInitRef.current = true
-    }, []);
-
-    useEffect(() => {
-      if (socketHasSetup.current) return
-      if (!socket) return
-      socketHasSetup.current = true
-      const handleOpen = () => {
-        if (playerID && gameID) {
-          socket.send(
-            JSON.stringify({
-              method: "join",
-              payload: { playerID, gameID, playerName, avatar },
-            })
-          );
-        } else if (playerID && isCreator && !gameID) {
-          socket.send(
-            JSON.stringify({
-              method: "create",
-              payload: { playerID, playerName, avatar, typeOfGame, words: deck.words.map(wordObj => wordObj.word) },
-            })
-          );
-        } else if (playerID && randomGame) {
-          console.log(playerID, randomGame)
-          socket.send(
-            JSON.stringify({
-              method: "join",
-              payload: { playerID, mode: "random", playerName, avatar },
-            })
-          );
-        }
-      };
-
-      socket.addEventListener("open", handleOpen)
+      if (playerID && gameID) WebSocketService.send("join", { playerID, gameID, playerName, avatar })
+      else if (playerID && isCreator && !gameID) WebSocketService.send("create", { playerID, playerName, avatar, typeOfGame, words: deck.words?.map(wordObj => wordObj.word) })
+      else if (playerID && randomGame) WebSocketService.send("join", { playerID, mode: "random", playerName, avatar })    
       
-      const handleMessage = (event) => {
-        const { method, payload } = JSON.parse(event.data);
-        console.log(payload)
-        if (["join", "create"].includes(method)) {
-          const { gameID, playerID, status: statusCode, typeOfGame } = payload;
+      const joinHandler = (payload) => {
+          const { gameID, playerID, status: statusCode, typeOfGame, isCreator } = payload;
           if (statusCode === 404) {console.log("error========");return setError(404)}
-          setSearchParams({ gameID, playerID });
+          setSearchParams({ gameID, playerID, isCreator});
           setGameID(prev => prev || gameID)
-          setPlayers(payload.players)
+          console.log(payload.players)
+          if (typeof payload.players[0] === "object") setPlayers(payload.players)
           setStatus("waiting");
           setTypeOfGame(prev => payload.typeOfGame || prev)
           setStoryGameUtils(prev => ({...prev, words: payload.words}))
-        } else if (method === "waiting-room-update") {
-          if (typeOfGame === "story") {
-            console.log(payload.words)
-            if (payload.storyGameUtils?.title) setStoryGameUtils(prev => ({...prev, title: payload.storyGameUtils.title}))
-            if (payload.storyGameUtils?.summary) setStoryGameUtils(prev => ({...prev, summary: payload.storyGameUtils.summary}))
-            setStoryGameUtils(prev => ({...prev, playerCount: payload.players.length}))
-          } 
-          setPlayers(prevPlayers => {
-            if (payload.players?.length && prevPlayers.length !== payload.players?.length) return payload.players;
-            return prevPlayers
-          });
-        } else if (method === "command" && payload?.command === "start") {
-          setStatus("countdown");
-        }
-        // else if (method === "switch-activity" && payload.activity) setStoryGameUtils(prev => ({...prev, activity: payload.activity}))
-        else if (method === "switch-activity") {
-          console.log(payload)
-          if (payload.activity === "" && payload.story) return setStoryGameUtils(prev => ({...prev, source: "external", activity: payload.activity, story: payload.story}))
-          setStoryGameUtils(prev => (payload.activity === "onboarding" ? {source: "external", activity: payload.activity} : {...prev, source: "external", activity: payload.activity}))
-        }
-      };
+      }
 
-      socket.addEventListener("message", handleMessage)
+      WebSocketService.route("create", joinHandler)
+      WebSocketService.route("join", joinHandler)
+
+      const waitingRoomUpdateHandler = (payload) => {
+        if (typeOfGame === "story") {
+          console.log(payload.words)
+          if (payload.storyGameUtils?.title) setStoryGameUtils(prev => ({...prev, title: payload.storyGameUtils.title}))
+          if (payload.storyGameUtils?.summary) setStoryGameUtils(prev => ({...prev, summary: payload.storyGameUtils.summary}))
+          setStoryGameUtils(prev => ({...prev, playerCount: payload.players.length}))
+        } 
+        setPlayers(prevPlayers => {
+          console.log(payload.players)
+          if (payload.players?.length && prevPlayers?.length !== payload.players?.length && typeof payload.players[0] === "object") return payload.players;
+          return prevPlayers
+        });
+      }
+
+      WebSocketService.route("waiting-room-update", waitingRoomUpdateHandler)
+
+      const commandHandler = (payload) => {
+          if (!payload?.command === "start") return
+          console.log(payload.script)
+          setStoryGameUtils(prev => ({...prev, script: payload.script, direction: "client"}))
+          setStatus("countdown");
+      }
+
+      WebSocketService.route("command", commandHandler)
+
+      const switchActivityHandler = (payload) => {
+        console.log(payload)
+        if (payload.activity === "" && payload.story) return setStoryGameUtils(prev => ({...prev, direction: "client", activity: payload.activity, story: payload.story}))
+        setStoryGameUtils(prev => ({...prev, ...payload, direction: "client", script: {...prev.script, scriptIndex: payload.scriptIndex}}))
+      }
       
-      return () => {
-        if (socket.readyState === WebSocket.OPEN) {
-          console.log("closing socket")
-          socket.send(JSON.stringify({method: "disconnect", payload: {gameID, playerID}}))
-          socket.close();
-        }
-        socket.onopen = null; // Clear open handler
-        socket.onmessage = null; // Clear message handler
-      };
-    }, [socket])
+      WebSocketService.route("switch-activity", switchActivityHandler)
+
+      const closingHandle = () => {
+        WebSocketService.send("disconnect", { gameID, playerID });
+        WebSocketService.close()
+      }
+
+      // return closingHandle
+
+    }, [])
 
     useEffect(() => {
       
@@ -125,22 +100,32 @@ const Playing = () => {
       ) {
         setStoryGameUtils(prev => {
           prev.playerCount = players.length;
-          socket.send(JSON.stringify({method: "title-and-summary", payload: {gameID, playerID, storyGameUtils: prev, players}}));
+          WebSocketService.send("title-and-summary", {gameID, playerID, storyGameUtils: prev, players});
           return prev
         })
       }
     }, [players, storyGameUtils])
 
     useEffect(() => {
-      console.log(storyGameUtils.activity)
-      if ( storyGameUtils.source !== "external" && storyGameUtils.activity !== null && players.length) {
-        if (storyGameUtils.activity === "uploading") return socket.send(JSON.stringify({method: "switch-activity", payload: {gameID, playerID, ...storyGameUtils}}))
-        socket.send(JSON.stringify({method: "switch-activity", payload: {gameID, playerID, activity: storyGameUtils.activity}}))
+      console.log(storyGameUtils, isCreator, typeOfGame, typeOfGame === "chat" && storyGameUtils.activity === "next-line" && isCreator)
+      if (storyGameUtils.direction === "server") {
+        if ( storyGameUtils.activity !== null && players.length) {
+          console.log("shocker")
+          if (storyGameUtils.activity === "uploading") return WebSocketService.send("switch-activity", {gameID, playerID, ...storyGameUtils})
+          console.log("------- Sending: ", Date())
+          WebSocketService.send("switch-activity", {gameID, playerID, activity: storyGameUtils.activity})
+        }
+        // else if (typeOfGame === "chat" && storyGameUtils.activity === "next-line" && isCreator) {
+        //   console.log("sending >>>>> ")
+        //   WebSocketService.send("switch-activity", {gameID, playerID, activity: storyGameUtils.activity})
+        // }
       }
-    }, [storyGameUtils.activity])
+
+    }, [storyGameUtils.direction])
 
     const handleStart = () => {
-      socket.send(JSON.stringify({method: "command", payload: {command: "start", gameID}}))
+      console.log('client - sending command')
+      WebSocketService.send("command", {command: "start", gameID, typeOfGame, words: deck.words, players })
     }
 
     const StoryView = <Yapping isGameCreator={isCreator} mode={"game-onboarding"} typeOfGame={typeOfGame}
@@ -149,10 +134,11 @@ const Playing = () => {
 
     const ChatView = <Chat 
                         isGameCreator={isCreator} 
-                        mode={"chat"} storyGameUtils={storyGameUtils} 
+                        mode={"chat"} storyGameUtils={{...storyGameUtils, gameID}} 
                         setStoryGameUtils={setStoryGameUtils}
+                        players={players} setPlayers={setPlayers}
+                        playerID={playerID} isCreator={isCreator}
                     />
-
     return (
       <>
       {
@@ -163,14 +149,14 @@ const Playing = () => {
         </> :
         <> 
         {
-          (status === "countdown" || storyGameUtils.activity === "countdown") ? <Counter status={status} setStatus={setStatus} storyGameUtils={storyGameUtils} setStoryGameUtils={setStoryGameUtils} /> :
-          (deck.words || storyGameUtils.words).length ? 
-            <PlayingManager isCreator={isCreator} typeOfGame={typeOfGame} socket={socket} 
+          (status === "countdown" || storyGameUtils.activity === "countdown") ? <Counter isCreator={isCreator} status={status} setStatus={setStatus} storyGameUtils={storyGameUtils} setStoryGameUtils={setStoryGameUtils} /> :
+          (deck.words || storyGameUtils.words)?.length || typeOfGame === "chat" ? 
+            <PlayingManager isCreator={isCreator} typeOfGame={typeOfGame} 
               deck={deck} gameID={gameID} playerID={playerID}
               storyGameUtils={storyGameUtils} setStoryGameUtils={setStoryGameUtils}
               StoryView={StoryView} ChatView={ChatView}
             /> 
-            : <>Error getting the game set!</>  
+            : <>{ !deck?.words && "No deck words!" || !storyGameUtils?.words && "No game words!"}</>  
         }
         </>
       }

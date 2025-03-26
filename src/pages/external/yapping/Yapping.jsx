@@ -81,7 +81,7 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
     console.log(storyGameUtils)
     const activityDifferent = (storyGameUtils.activity === "" || storyGameUtils.activity) && storyGameUtils.activity !== activity
     if (
-        storyGameUtils?.source === "this-writer" || storyGameUtils.voting ||
+        storyGameUtils.direction === "server" || storyGameUtils.voting ||
         !(votedSentence || titleDifferent || summaryDifferent || activityDifferent)
     ) return
     if (votedSentence) setStory(prev => {
@@ -100,8 +100,8 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
 
   useEffect(() => {
     if (!mode?.startsWith("game")) return
-    if (currSentence.sentence && storyGameUtils.source !== "this-writer") {
-      setStoryGameUtils(prev => ({...prev, source: "this-writer"})) // so that when story changes, can be exported to game
+    if (currSentence.sentence && storyGameUtils.direction === "client") {
+      setStoryGameUtils(prev => ({...prev, direction: "server"})) // so that when story changes, can be exported to game
     }
     if (
       (activity === "submitting" && storyGameUtils.activity === "creating") ||
@@ -112,8 +112,8 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
       (activity === "creating" && storyGameUtils.activity === "countdown")
     ) {
       setStoryGameUtils(prev => (activity === "uploading" && storyGameUtils.activity === "submitting") ?
-                        {...prev, activity, title, summary, story, checked, source: "this-writer"} :
-                        {...prev, activity, source: "this-writer"}
+                        {...prev, activity, title, summary, story, checked, direction: "server"} :
+                        {...prev, activity, direction: "server"}
         )
     }
   }, [currSentence, activity])
@@ -135,7 +135,7 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
 
   useEffect(() => {
     if (!mode?.startsWith("game")) return;
-    if (storyGameUtils.source !== "this-writer") return;
+    if (storyGameUtils.direction === "client") return;
     setStoryGameUtils(prev => ({...prev, currSentence: story[story.length - 1]}))
   }, [story])
 
@@ -241,6 +241,7 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
           story={story}
           checked={checked} setChecked={setChecked}
           handleSubmit={handleSubmit}
+          setActivity={setActivity}
         />
       }
 

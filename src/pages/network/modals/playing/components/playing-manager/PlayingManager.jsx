@@ -3,48 +3,44 @@ import PlayersDashboard from "../../components/player-state/PlayerDashboard"
 import QuizCard from "../../../../../personal/modals/quiz/quiz-card/QuizCard"
 import formatRouter from "../../utils/formatRouter"
 
+import WebSocketService from "../../../../../../api/game/websocket";
+
 import { useState, useEffect } from "react";
 
-const PlayingManager = ({ typeOfGame, socket, deck, gameID, playerID, storyGameUtils, setStoryGameUtils, StoryView, ChatView }) => {
+const PlayingManager = ({ typeOfGame, deck, gameID, playerID, storyGameUtils, setStoryGameUtils, StoryView, ChatView }) => {
     // console.log("....Playing")
-    if (!socket) return
     const [afterUpdateFunc, setAfterUpdateFunc ] = useState(null)
     const [players, setPlayers] = useState([])
     const [voting, setVoting] = useState(false)
   
     const handlePlay = (afterPlayHandle) => { // The call back is what happens after the server responds to the play
       const [ correct, registerPlay ] = afterPlayHandle
-      socket.send(JSON.stringify({method: "play", payload: {playerID, gameID, isCorrect: correct}}))
+      WebSocketService.send("play", {playerID, gameID, isCorrect: correct})
       setAfterUpdateFunc(() => registerPlay)
     }
   
     useEffect(() => {
-      console.log(storyGameUtils.source, storyGameUtils.currSentence)
+      console.log(storyGameUtils.direction, storyGameUtils.currSentence)
       if (storyGameUtils.currSentence) {
-        socket.send(JSON.stringify({method: "add-new-sentence", payload: {gameID, playerID, storyGameUtils}}))
+        WebSocketService.send("add-new-sentence", {gameID, playerID, storyGameUtils})
       }
     }, [storyGameUtils.currSentence])
   
     useEffect(() => {
-      socket.onmessage = event => {
-        const { method, payload } = JSON.parse(event.data)
-        if (method === "play") {
-          // nothing to do for now
-        }
-        else if (method === "playing-update") {
+
+      WebSocketService.route("play", () => console.log("play"))
+
+      WebSocketService.route("playing-update", (payload) => {
           if (afterUpdateFunc) {
             afterUpdateFunc()
           }
           setPlayers(payload.players || [])
-        }
-        else if (method === "all-players-wrote") {
-          setStoryGameUtils(prev => ({...prev, voting: true, source: "external", currSentences: payload.currSentences}))
-        }
-        else if (method === "voted-sentence") {
-          setStoryGameUtils(prev => ({...prev, source: "external", votedSentence: payload.votedSentence}))
-        }
-        
-      }
+      })
+
+      WebSocketService.route("all-players-wrote", (payload) => setStoryGameUtils(prev => ({...prev, voting: true, direction: "client", currSentences: payload.currSentences})))
+
+      WebSocketService.route("voted-sentence", (payload) => setStoryGameUtils(prev => ({...prev, direction: "client", votedSentence: payload.votedSentence})))
+      
     }, [afterUpdateFunc])
   
     useEffect(() => {
@@ -55,13 +51,13 @@ const PlayingManager = ({ typeOfGame, socket, deck, gameID, playerID, storyGameU
       const bestSentence = parseInt(e.target.id)
       setVoting(false);
       setStoryGameUtils(prev => ({...prev, voting: false}))
-      socket.send(JSON.stringify({method: "voting-best-sentence", payload: {gameID, playerID, bestSentence}}))
+      WebSocketService.send("voting-best-sentence", { gameID, playerID, bestSentence })
     }
   
     return (
       <>
         
-        <PlayersDashboard players={players} gameID={gameID} socket={socket} playerID={playerID}/>
+        <PlayersDashboard players={players} gameID={gameID} playerID={playerID}/>
         {typeOfGame === "quiz" ?
           <QuizCard 
             importedFormat={'placeholder'} importedQuizType={'placeholder'}

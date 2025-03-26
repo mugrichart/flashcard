@@ -1,7 +1,8 @@
 
+import { Directions } from "@mui/icons-material";
 import { useState, useEffect } from "react"
 
-const Counter = ({ status, setStatus, storyGameUtils, setStoryGameUtils }) => {
+const Counter = ({ isCreator, status, setStatus, storyGameUtils, setStoryGameUtils }) => {
     const [counter, setCounter] = useState(3)
 
     useEffect(() => {
@@ -12,7 +13,7 @@ const Counter = ({ status, setStatus, storyGameUtils, setStoryGameUtils }) => {
               if (counter - 1 === 0) {
                 clearInterval(intervalId);
                 setStatus("playing");
-                setStoryGameUtils(prev => ({...prev, activity: "creating"}))
+                setStoryGameUtils(prev => ({...prev, activity: "creating", direction: isCreator ? "server" : "client"}))
               }
           }, 1000);
       }

@@ -1,12 +1,14 @@
 import { useRef, useEffect } from "react"
 import "./PlayerState.css"
 
+import WebSocketService from "../../../../../../api/game/websocket"
+
 const PlayersDashboard = ({ gameID, socket, players, playerID }) => {
   const sentRef = useRef(false)
   useEffect(() => {
     if (sentRef.current) return
     sentRef.current = true
-    socket.send(JSON.stringify({method: "playing-update", payload: {gameID}}))
+    WebSocketService.send("playing-update", {gameID})
   }, [])
 
   return (

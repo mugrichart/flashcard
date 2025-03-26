@@ -35,7 +35,7 @@ const contents = [
 
 const MoreHome = () => (
   <>
-    <article>
+      <article>
         <p>
           {contents[0]}
         </p>

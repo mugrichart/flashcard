@@ -1,0 +1,42 @@
+.chat-room {
+  padding: 2rem;
+  display: flex;
+  gap: 1em;
+}
+
+section {
+  box-shadow: 0 0 1em;
+  border-radius: 1em;
+  border: 1px solid lightblue;
+  min-width: 15em;
+  max-height: 20em;
+  padding: 1em .2em;
+}
+
+section p.actor-line {
+  height: auto;
+  max-height: calc(100% - 2em);
+  overflow-y: auto;
+  padding: 1em;
+  font-size: 1.1em;
+}
+.second-section {
+  width: fit-content;
+  max-width: 500px;
+}
+
+.participants-grid {
+  gap: 1em;
+  display: flex;
+} 
+
+section > h2 {
+  padding: .2em;
+  text-align: left;
+}
+
+.first-section span.line-word {
+  background-color: white;
+  padding: .2em;
+  border-radius: .3em;
+}

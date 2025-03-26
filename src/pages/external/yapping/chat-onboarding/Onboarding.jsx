@@ -20,14 +20,12 @@ const Onboarding = ({words, mode, playerCount, isLeadAuthor, setAiHelp, setAiOpt
           </textarea>
       </span>
       {/*where the section would go if wasn't commented out*/}
-      {((isLeadAuthor && playerCount > 1) || !mode) &&
-        <Button
-          variant="contained" color='primary' disableElevation
-          onClick={() => setActivity(mode ? "countdown": "creating")}
-        >
-          Start
-        </Button>
-      }
+      {/* <Button
+        variant="contained" color='primary' disableElevation
+        onClick={() => setActivity(mode ? "countdown": "creating")}
+      >
+        Start
+      </Button> */}
     </div>
   )
 }
