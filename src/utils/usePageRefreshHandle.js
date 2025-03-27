@@ -1,4 +1,4 @@
-import fetchDeck from "../api/fetchDeck";
+import { fetchDeck } from "../api/http"
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { openDeck } from "../features/personal/deck/deckSlice";

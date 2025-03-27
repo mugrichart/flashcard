@@ -3,7 +3,7 @@ import PlayersDashboard from "../../components/player-state/PlayerDashboard"
 import QuizCard from "../../../../../personal/modals/quiz/quiz-card/QuizCard"
 import formatRouter from "../../utils/formatRouter"
 
-import WebSocketService from "../../../../../../api/game/websocket";
+import WebSocketService from "../../../../../../api/ws";
 
 import { useState, useEffect } from "react";
 

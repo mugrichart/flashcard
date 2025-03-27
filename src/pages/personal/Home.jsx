@@ -10,7 +10,7 @@ import { MuiCheckbox } from '../../components/MuiComponents';
 import Info from '../../components/Info';
 
 import { useNavigate } from 'react-router-dom';
-import { fetchDeck, fetchAllDecks, deleteDecks, apiBatchRequest } from '../../api'
+import { fetchDeck, fetchAllDecks, deleteDecks, apiBatchRequest } from '../../api/http'
 
 import { CHUNK_SIZE, CHUNK_TARGET_MASTERY_LEVEL, TARGET_PERFECT_LEVEL } from '../../constants'
 

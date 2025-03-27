@@ -65,10 +65,10 @@ const CardAddManual = () => {
   }, [status])
 
   const submitting = () => {
-    const API_BASE_URL = API_BASE_URL
+    const { httpEndpoint } = { httpEndpoint }
     if (status === 'submitting') return
     setStatus('submitting'); console.log('sub')
-    postingData(`${API_BASE_URL}/cards/${deckName}`, { userId, deckId, deckLang, mode: 'manual', content: {'root word': formContent['root word'], variations: formContent.variations}} )
+    postingData(`${ httpEndpoint }/cards/${deckName}`, { userId, deckId, deckLang, mode: 'manual', content: {'root word': formContent['root word'], variations: formContent.variations}} )
       .then((data) => {
         afterSubmitReset();
         setReadytosubmit(false)

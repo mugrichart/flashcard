@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import './Auth.css';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import API_BASE_URL from '../../../serverConfig'
-
 
 import Input from './input/Input';
 
 import Spinner from 'react-spinner-material';
 
+import { register, login } from '../../api/http';
 
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../features/auth/authSlice';
@@ -28,10 +26,10 @@ const Auth = ({ page, setUserAuthed }) => {
     try {
       setLoading(true)
       if (page === 'sign-up') {
-        await axios.post(`${API_BASE_URL}/auth/register`, { username, email, password });
+        await register({ username, email, password });
         navigate('..');
       } else {
-        const response = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
+        const response = await login({ email, password });
         localStorage.setItem('token', response.data.token);
         dispatch(setUser(response.data.user))
         localStorage.setItem('user', JSON.stringify(response.data.user))

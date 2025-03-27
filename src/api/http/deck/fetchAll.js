@@ -1,9 +1,9 @@
-import API_BASE_URL from "../../serverConfig";
+import { httpEndpoint } from "../../../../serverConfig";
 import axios from "axios";
 
 export default async (userId, myCardsOnly, language) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/cards/decks?user=${userId}&creator=${myCardsOnly ? userId : ''}&language=${language || ''}`);
+        const response = await axios.get(`${ httpEndpoint }/cards/decks?user=${userId}&creator=${myCardsOnly ? userId : ''}&language=${language || ''}`);
         return response.data;
       } catch (error) {
         console.log(error)

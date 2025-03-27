@@ -1,10 +1,10 @@
-import API_BASE_URL from "../../serverConfig";
+import { httpEndpoint } from "..";
 import axios from "axios";
 
 export default async (deckId) => {
     const userId = JSON.parse(localStorage.getItem('user')).userId;
     try {
-        const res = await axios.get(`${API_BASE_URL}/cards/deck?deckId=${deckId}&userId=${userId}`);
+        const res = await axios.get(`${ httpEndpoint }/cards/deck?deckId=${deckId}&userId=${userId}`);
         const deck = res.data.deck;
         return deck;
     } catch (error) {

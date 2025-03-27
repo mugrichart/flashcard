@@ -3,8 +3,8 @@ import "./Submission.css"
 import { Button } from "@mui/material"
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
-const Submission = ({mode , isLeadAuthor, title, setTitle, story, checked, setChecked, handleSubmit, setActivity}) => {
-  const existingTitle = useRef(title)
+const Submission = ({storySettings, setStorySettings, mode , isLeadAuthor, title, setTitle, story, checked, setChecked, handleSubmit, setActivity}) => {
+  const existingTitle = useRef(storySettings.metadata.title)
   return (
     <div className="submission">
       <h3><AutoAwesomeIcon />Final touches</h3>
@@ -16,7 +16,7 @@ const Submission = ({mode , isLeadAuthor, title, setTitle, story, checked, setCh
               <label htmlFor="">Complete the title</label>
               <input
                   type="text" name="" id="" placeholder='Title of the story' className='title'
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => setStorySettings(prev => ({...prev, metadata: {...prev.metadata, title: e.target.value}}))}
               />
             </span>
         }
@@ -31,7 +31,7 @@ const Submission = ({mode , isLeadAuthor, title, setTitle, story, checked, setCh
       </span>
       <h4>Your story</h4>
       <p id="text-container">
-        {story.map(sentenceObj => sentenceObj.sentence).join(' ')}
+        {storySettings.state.story.map(sentenceObj => sentenceObj.sentence).join(' ')}
       </p>
       { (isLeadAuthor || !mode) &&
         <Button

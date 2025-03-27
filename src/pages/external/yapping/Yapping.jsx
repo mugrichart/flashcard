@@ -15,6 +15,8 @@ import usePageRefreshHandle from "../../../utils/usePageRefreshHandle"
 
 import Info from '../../../components/Info'
 
+import storySettingsSelector from './utils/storySettings';
+
 const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeOfGame }) => {
   const handleRefresh = usePageRefreshHandle()
   const { learning: deck, _id: deckId, words: cards } = useSelector((state) => state.deck.openDeck);
@@ -34,8 +36,10 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
     handleRefresh(deckId)
   }, [deckId])  
 
+  const [ storySettings, setStorySettings ] = useState( storySettingsSelector({ step: "catalog" }) )
+
   const [story, setStory] = useState([]);
-  const [stories, setStories] = useState([]);
+  // const [stories, setStories] = useState([]);
   const [title, setTitle] = useState(mode?.startsWith("game") ? storyGameUtils.title : "");
   const [summary, setSummary] = useState(mode?.startsWith("game") ? storyGameUtils.summary : "")
   const [checked, setChecked] = useState(false);
@@ -55,7 +59,9 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
   const [info, setInfo] = useState({ type: '', message: '', exists: false });
 
   const { handlePartSelection, handleSubmit, handleSummarySubmit, callUponAi, handleApproval, updateAttempt} = useGeneralHook(
-    {mode,
+    {
+    storySettings, setStorySettings,
+    mode,
     aiHelp, setAiHelp,
     selected, setSelected,
     currSentence, setCurrSentence, 
@@ -67,7 +73,7 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
     selectedWords, setSelectedWords,
     story, setStory,
     title, setTitle, 
-    stories, setStories,
+    // stories, setStories,
     summary, attempt, setAttempt, correctSentence
   }
   )
@@ -97,6 +103,7 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
 
   
   console.log(words)
+  console.log(storySettings)
 
   useEffect(() => {
     if (!mode?.startsWith("game")) return
@@ -125,13 +132,13 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
   }, [title, summary])
 
   useEffect(() => {
-    if (activity === 'practicing') 
+    if (storySettings.state?.mode === 'practice') 
       setCorrectWordSet(
         getKeywords(
-          currSentence.sentence?.split(' '), 
-          currSentence.blanked?.split(' ').filter(word => !['.', ',', ';', ']', '"', ')', '}', '?', '!'].includes(word)))
+          storySettings.state?.sentenceInPractice.sentence?.split(' '), 
+          storySettings.state?.sentenceInPractice.blanked?.split(' ').filter(word => !['.', ',', ';', ']', '"', ')', '}', '?', '!'].includes(word)))
       )
-  }, [currSentence])
+  }, [storySettings.state?.sentenceInPractice])
 
   useEffect(() => {
     if (!mode?.startsWith("game")) return;
@@ -158,34 +165,33 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
       }
       {(activity && title) ? <h3>Title: {title}</h3> : <></>}
       {
-        !activity ?
+        storySettings?.state?.step === "catalog" ?
         <StoryCatalog 
-          stories={stories}
-          setSelected={setSelected} selected={selected}
-          setActivity={setActivity}
-          setTitle={setTitle} setSummary={setSummary}
-          setStory={setStory}
+          // stories={stories}
+          // setSelected={setSelected} selected={selected}
+          // setActivity={setActivity}
+          // setTitle={setTitle} setSummary={setSummary}
+          // setStory={setStory}
+          deckId = {deckId}
+          setStorySettings={setStorySettings}
         /> :
         <></>
       }
       {
-        ['creating', 'practicing'].includes(activity) &&
+        ['create', 'practice'].includes(storySettings?.state?.mode) && ['create', 'practice'].includes(storySettings?.state?.step) &&
         <Side 
-        stories={stories}
-        words={words} setWords={setWords} 
-        selectedWords={selectedWords} setSelectedWords={setSelectedWords}
-        okAttempt={okAttempt}
-        currSentence={currSentence}
-        setSelected={setSelected} selected={selected}
-        setActivity={setActivity} activity={activity} 
-        story={story} setStory={setStory}
-        correctWordSet={correctWordSet}
-        updateAttempt={updateAttempt}
+          words={words} 
+          selectedWords={selectedWords} 
+          okAttempt={okAttempt}
+          correctWordSet={correctWordSet}
+          updateAttempt={updateAttempt}
+          storySettings={storySettings}
         />
       }
-      { activity==='onboarding' && (
+      { storySettings.state.mode === "create" && storySettings.state.step ==='onboarding' && (
         !typeOfGame || typeOfGame === "story" ? 
         <Onboarding 
+          storySettings={storySettings} setStorySettings={setStorySettings}
           isLeadAuthor={isLeadAuthor}
           playerCount = {storyGameUtils?.playerCount || 0}
           words={words} mode={mode}
@@ -209,8 +215,9 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
         
       }
       {
-        ['creating', 'practicing', 'reading'].includes(activity) && story &&
+        ['create', 'practice', 'read'].includes(storySettings.state.mode) && ['create', 'practice', 'read'].includes(storySettings.state.step) &&
         <Story 
+          storySettings={storySettings} setStorySettings={setStorySettings}
           mode={mode}
           isLeadAuthor={isLeadAuthor}
           selectedWords={selectedWords} words={words}
@@ -233,8 +240,9 @@ const Yapping = ({ mode, storyGameUtils, setStoryGameUtils, isGameCreator, typeO
         />
       }
       {
-        activity === 'submitting' && 
+        storySettings.state.step === 'submit' && 
         <Submission 
+          storySettings={storySettings} setStorySettings={setStorySettings}
           mode = {mode}
           isLeadAuthor={isLeadAuthor}
           title={title} setTitle={setTitle}

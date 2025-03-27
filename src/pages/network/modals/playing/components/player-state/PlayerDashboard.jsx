@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react"
 import "./PlayerState.css"
 
-import WebSocketService from "../../../../../../api/game/websocket"
+import WebSocketService from "../../../../../../api/ws"
 
 const PlayersDashboard = ({ gameID, socket, players, playerID }) => {
   const sentRef = useRef(false)

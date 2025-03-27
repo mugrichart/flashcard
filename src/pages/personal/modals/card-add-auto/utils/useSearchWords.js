@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-import API_BASE_URL from '../../../../../../serverConfig'
+import { httpEndpoint } from '../../../../../../serverConfig'
 
 export const useSearchWords = (trackedSearchValue, deckLang, delay=2000) => {
     const [searchWords, setSearchWords] = useState([])
@@ -23,7 +23,7 @@ export const useSearchWords = (trackedSearchValue, deckLang, delay=2000) => {
         console.log(searchValue)
         if (searchValue)  {
             setStatus('loading')
-            axios.get(`${API_BASE_URL}/words/search?language=${deckLang}&word=${searchValue}`)
+            axios.get(`${ httpEndpoint }/words/search?language=${deckLang}&word=${searchValue}`)
                 .then(res => {
                 // console.log(res.data.searchWords)
                 setSearchWords(res.data.searchWords)
@@ -40,7 +40,7 @@ export const useSearchWords = (trackedSearchValue, deckLang, delay=2000) => {
     //     if (debouncedValue)  {
     //         console.log(deckLang)
     //         setLoading(true)
-    //         axios.get(`${API_BASE_URL}/words/search?language=${deckLang}&word=${debouncedValue}`)
+    //         axios.get(`${ httpEndpoint }/words/search?language=${deckLang}&word=${debouncedValue}`)
     //             .then(res => {
     //             // //console.log(res.data.searchWords)
     //             setSearchWords(res.data.searchWords)

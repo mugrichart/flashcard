@@ -12,7 +12,7 @@ const perfEmojis = ['😥', '😔', '😬', '😌', '🤠',  '🤠', '😎', '�
 const perfLabels = ['Really??', "C'mon", 'Are you for real?', 'practice more', 'fair', 'good', "Sheesh", 'No way']
 
 import { CHUNK_SIZE, CHUNK_TARGET_MASTERY_LEVEL } from '../../../../constants';
-import uploadMasteryUpdates from '../../../../api/uploadMasteryUpdates';
+import { masteryUpdate } from '../../../../api/http';
 
 const Performance = ({ wins, entireDeck, deckLearnChunk, mode, setUserDecision }) => {
   const [correct, setCorrect] = useState(null)
@@ -54,7 +54,7 @@ const Performance = ({ wins, entireDeck, deckLearnChunk, mode, setUserDecision }
       if (uploadingRight.current === false) return
       uploadingRight.current = false;
       try {
-        const result = await uploadMasteryUpdates(wordsMasteriesList, deckId, deckLearnChunk)
+        const result = await masteryUpdate(wordsMasteriesList, deckId, deckLearnChunk)
         dispatch(openDeck(result.deck))
         console.log(result.msg, result.deck)
       } catch (error) { console.log(error) }

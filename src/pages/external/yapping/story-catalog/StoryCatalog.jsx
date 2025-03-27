@@ -2,21 +2,37 @@
 import './StoryCatalog.css'
 import { Button } from "@mui/material"
 import { Add as AddIcon } from '@mui/icons-material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const StoryCatalog = ({ stories, setActivity, setTitle, setSummary, setStory, selected, setSelected }) => {
+import { fetchAllStories } from '../../../../api/http';
+
+import storySettingsSelector from '../utils/storySettings';
+
+
+const StoryCatalog = ({ deckId, setStorySettings }) => {
+
   const resetStory = () => {
-      setActivity('onboarding');
-      setTitle('');
-      setSummary("");
-      setStory([]);
+
+      setStorySettings( storySettingsSelector( { mode: "create", step: "onboarding" } ))
+      // setActivity('onboarding');
+      // setTitle('');
+      // setSummary("");
+      // setStory([]);
     }
   
-  useEffect(() => setSelected(-1), [])
+  // useEffect(() => setSelected(-1), [])
+
+  const [ stories, setStories ] = useState([])
+
+  useEffect(() => {
+    // if (!deckId || mode?.startsWith("game")) return
+    fetchAllStories(deckId).then(setStories)
+                    .catch((e) => console.log(e.msg));
+  }, [deckId])
 
   return (
     <div className='side side-wide story-catalog'>
-      {stories?.length ?
+      {stories.length ?
         <>
           <div>
             <p>Pick a story to practice with</p>
@@ -26,9 +42,20 @@ const StoryCatalog = ({ stories, setActivity, setTitle, setSummary, setStory, se
                   <span
                       key={i}
                       onClick={() => {
-                          setSelected(i);
+                          setStorySettings(storySettingsSelector(
+                            {
+                              title: story.title,
+                              summary: story.summary,
+                              author: story.author,
+                              story: story.story,
+                              mode: "practice",
+                              step: "practice",
+                              sentenceInPractice: story.story[0],
+                              sentenceIndex: 0
+                            }
+                          ))
                       }}
-                      className={`story--span ${selected === story.title ? 'selected' : ''}`}
+                      className="story--span"
                   >
                   {story.title}
                   </span>

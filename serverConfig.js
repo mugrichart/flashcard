@@ -1,8 +1,13 @@
 // serverConfig.js
 const servers = import.meta.env
-const API_BASE_URL = "http://localhost:3500/api/v1" //servers[servers.VITE_API_BASE_URL] || servers.VITE_SERVER_1
-const API_WS_URL = servers.VITE_WS_SERVER
 
-export default API_BASE_URL;
+const HOST = servers.DEV ? "localhost:3500" : servers.VITE_HOST
+const PATH = servers.VITE_PATH
 
-export { API_WS_URL }
+const httpEndpoint = `http${servers.DEV ? "" : "s"}://${HOST}/${PATH}`
+
+const wsEndpoint = `ws${servers.DEV ? "" : "s"}://${HOST}/${PATH}`
+
+console.log(httpEndpoint, wsEndpoint)
+
+export { httpEndpoint, wsEndpoint }

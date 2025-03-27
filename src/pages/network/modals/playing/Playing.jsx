@@ -2,7 +2,7 @@ import "./Playing.css"
 
 import Counter from "./utils/Counter";
 
-import WebSocketService from "../../../../api/game/websocket"
+import WebSocketService from "../../../../api/ws"
 
 import WaitingRoom from "../waiting-room/WaitingRoom";
 

@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import WebSocketService from "../../../../../api/game/websocket"
+import WebSocketService from "../../../../../api/ws"
 
 import Peer from "simple-peer";
 

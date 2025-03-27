@@ -49,9 +49,9 @@ const Temp = () => {
 
     const cardStealing = async () => {
       try {
-        const API_BASE_URL = API_BASE_URL;
+        const { httpEndpoint } = { httpEndpoint };
         const userId  = JSON.parse(localStorage.getItem('user')).userId
-        const response = await axios.post(`${API_BASE_URL}/cards/temporary`, {userId, idType, id, deckLang, selected})
+        const response = await axios.post(`${ httpEndpoint }/cards/temporary`, {userId, idType, id, deckLang, selected})
         const { id:deckId } = response.data;
         console.log(deckId)
         setProcessed(prev => prev.filter(card => !selected.includes(card._id)))
@@ -104,8 +104,8 @@ export default Temp;
 const processing = async (setProgress, beforeProcess, setUnprocessed, setProcessed, tempId, setStatus, setTimePerCard) => {
   setProgress(0)
   try {
-    const API_BASE_URL = API_BASE_URL;
-    axios.get(`${API_BASE_URL}/cards/app`)
+    const { httpEndpoint } = { httpEndpoint };
+    axios.get(`${ httpEndpoint }/cards/app`)
       .then(res => {
         const {timePerCard:timesPerCard} = res.data;
         console.log(timesPerCard);
@@ -117,11 +117,11 @@ const processing = async (setProgress, beforeProcess, setUnprocessed, setProcess
       .catch(error => {console.log(error.message)})
 
     const startTime = Date.now(); // Record start time
-    const response2 = await axios.get(`${API_BASE_URL}/cards/temporary/${tempId}`)
+    const response2 = await axios.get(`${ httpEndpoint }/cards/temporary/${tempId}`)
     const { unprocessed, processed } = response2.data;
     const elapsedTime = Date.now() - startTime; // Calculate elapsed time
     const processCardLength = beforeProcess.length - unprocessed.length;
-    await axios.patch(`${API_BASE_URL}/cards/app`, { timePerCard : elapsedTime / processCardLength }); // Send elapsed time to server
+    await axios.patch(`${ httpEndpoint }/cards/app`, { timePerCard : elapsedTime / processCardLength }); // Send elapsed time to server
     setUnprocessed(unprocessed)
     setProcessed(processed)
     setStatus('processed')
@@ -137,10 +137,10 @@ const fetchingExtensionData = (setSearching, setUnprocessed, setProcessed, setTe
         const words = event.data.payload
         console.log('Data received from extension: ')
         if (words && words.length > 0) console.log(words.length + ' words. e.g: ' + words[0].word + ' - ' + words[0].context);
-        const API_BASE_URL = API_BASE_URL;
+        const { httpEndpoint } = { httpEndpoint };
         const userId  = JSON.parse(localStorage.getItem('user')).userId
         setSearching(true)
-        axios.patch(`${API_BASE_URL}/cards/temporary`, {userId, words : words || []})
+        axios.patch(`${ httpEndpoint }/cards/temporary`, {userId, words : words || []})
             .then(response => {
               const { unprocessed, processed, tempId } = response.data
               setUnprocessed(unprocessed)
