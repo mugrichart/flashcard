@@ -67,18 +67,18 @@ const CardAddManual = () => {
   const submitting = () => {
     const { httpEndpoint } = { httpEndpoint }
     if (status === 'submitting') return
-    setStatus('submitting'); console.log('sub')
+    setStatus('submitting'); //console.log('sub')
     postingData(`${ httpEndpoint }/cards/${deckName}`, { userId, deckId, deckLang, mode: 'manual', content: {'root word': formContent['root word'], variations: formContent.variations}} )
       .then((data) => {
         afterSubmitReset();
         setReadytosubmit(false)
-        console.log(data.deck._id)
+        //console.log(data.deck._id)
         dispatch(push(data.deck))
         dispatch(id(data.deck._id))
-        console.log(data.deck._id)
+        //console.log(data.deck._id)
       })
       .catch(e => {
-        console.log(e.message)
+        //console.log(e.message)
         setStatus('error'); setErrorMsg("Oops... Couldn't submit your card! Try again")})
   }
 
@@ -95,7 +95,7 @@ const CardAddManual = () => {
         return response.data;
       } catch (err) {
         const {error, deck} = err.response.data
-        console.log(deck?._id)
+        //console.log(deck?._id)
         if (deck?.id) dispatch(id(deck.id))
         setStatus('error');
         throw new Error(`Error making POST REQUEST in manual card: ${error}`)
@@ -105,7 +105,7 @@ const CardAddManual = () => {
   const addVariationHandle = (variationType, picked) => {
     if (picked) return
     const firstVariation = !Object.values(formContent.addedVariations).some(value => value === true) ;
-    console.log(firstVariation)
+    //console.log(firstVariation)
     if ( firstVariation || checkAllFilled()) {
       if (!firstVariation) {
         addNewMeaning()

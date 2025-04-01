@@ -19,7 +19,7 @@ const AudioCall = () => {
             .catch(error => console.error('Error accessing microphone:', error));
 
         socket.on('user-connected', userId => {
-            console.log('User connected:', userId);
+            //console.log('User connected:', userId);
             createPeerConnection(userId, true);
         });
 

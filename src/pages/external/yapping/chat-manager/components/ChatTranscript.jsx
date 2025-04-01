@@ -13,7 +13,7 @@ const ChatTranscript = ({playerID, players, setPlayers}) => {
     if (isListening ^ player.isSpeaking && typeof player === "object") {
       setPlayers(prev => {
         const prevCopy = [...prev]
-        console.log(prevCopy)
+        //console.log(prevCopy)
         prevCopy[playerIndex]["isSpeaking"] = !player.isSpeaking;
         return prevCopy
       })
@@ -26,7 +26,7 @@ const ChatTranscript = ({playerID, players, setPlayers}) => {
     
     const startListening = () => {
       if ('webkitSpeechRecognition' in window) {
-        console.log('first')
+        //console.log('first')
         recognition = new window.webkitSpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;

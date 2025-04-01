@@ -4,33 +4,26 @@ import shuffledNumbers from '../../../utils/shuffleArray';
 
 const Side = (
   {
-    words, selectedWords, okAttempt, 
-    correctWordSet, updateAttempt, storySettings
+    storySettings, selectedWords, okAttempt, 
+    correctWordSet, updateAttempt
   }) => {
 
   const [wordSetToDisplay, setWordSetToDisplay] = useState([])
   
   useEffect(() => {
-    if (correctWordSet.length && storySettings.state.mode === 'practice') {
-      const wordsToDisplay = shuffledNumbers(words.length - 1).slice(0, 3).map((randIndex) => words[randIndex]).concat(correctWordSet)
+    if (correctWordSet.length && storySettings.mode === 'practice') {
+      const wordsToDisplay = shuffledNumbers(storySettings.words.length - 1).slice(0, 3).map((randIndex) => storySettings.words[randIndex]).concat(correctWordSet)
       const randomizedOrder = shuffledNumbers(wordsToDisplay.length - 1).map(randomIndex => wordsToDisplay[randomIndex])
       setWordSetToDisplay(randomizedOrder)
     }
   }, [correctWordSet])
 
-  // console.log("words: ", words)
-  // console.log("words c: ", correctWordSet)
-
-  // console.log("toDisplay: ", wordSetToDisplay)
-
-  // console.log(storySettings)
-
   return (
     <div className="side">
         <div>
-          {{create: false, practice: okAttempt?.split('.')?.length < 2 }[storySettings.state.mode] &&
+          {{create: false, practice: okAttempt?.split('.')?.length < 2 }[storySettings.mode] &&
               <p>
-                {storySettings.state.mode === 'practice' ? 
+                {storySettings.mode === 'practice' ? 
                               'Use the right word(s) from this set!' : 
                 selectedWords?.length === 0 && 'Pick the word(s) you are about to use!'}
               </p> 
@@ -39,10 +32,10 @@ const Side = (
         <>
           {
             <div className='side-pool word-pool'>
-            {(storySettings.state.mode === 'practice' ? wordSetToDisplay : words.filter(word => !selectedWords.includes(word))).map((word, i) => (
+            {(storySettings.mode === 'practice' ? wordSetToDisplay : storySettings.words.filter(word => !selectedWords.includes(word))).map((word, i) => (
               <span 
                 className={correctWordSet.includes(word) ? "right-word" : "wrong-word"}
-                onClick={e => storySettings.state.mode === 'practice' && updateAttempt({word}) } 
+                onClick={e => storySettings.mode === 'practice' && updateAttempt({word}) } 
                 key={i}>
                 {word}
               </span>

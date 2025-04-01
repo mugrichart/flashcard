@@ -8,7 +8,7 @@ export default async (deckId) => {
         const deck = res.data.deck;
         return deck;
     } catch (error) {
-        console.log(error)
+        //console.log(error)
         throw error
       }
 }

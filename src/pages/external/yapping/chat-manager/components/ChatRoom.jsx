@@ -11,13 +11,13 @@ const ChatRoom = ({ playerID, players, setPlayers, storyGameUtils, setStoryGameU
   // const [script, setScript] = useState(null)
   // const [currentLineObj, setCurrentLineObj ] = useState(null)
 
-  // console.log(script, storyGameUtils)
+  // //console.log(script, storyGameUtils)
 
   // useEffect(() => {
-  //   console.log("---- current line: ", currentLineObj)
+  //   //console.log("---- current line: ", currentLineObj)
   //   if (!isCreator) return;
   //   let t = setTimeout(() => {
-  //     console.log("shifting")
+  //     //console.log("shifting")
   //     setStoryGameUtils(prev => ({...prev, direction: "server", activity: "next-line" }))
   //   }, 3000);
 
@@ -29,9 +29,9 @@ const ChatRoom = ({ playerID, players, setPlayers, storyGameUtils, setStoryGameU
   // }, [storyGameUtils.script.script])
 
   // useEffect(() => {
-  //   console.log("-------- script: ", script)
+  //   //console.log("-------- script: ", script)
   //   if (storyGameUtils.direction === "client" && script) {
-  //     console.log(storyGameUtils, script)
+  //     //console.log(storyGameUtils, script)
   //     setCurrentLineObj(script[storyGameUtils.script.scriptIndex || 0])
   //   }
   // }, [storyGameUtils.script.scriptIndex, script])

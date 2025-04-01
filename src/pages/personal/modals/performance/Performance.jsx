@@ -56,7 +56,7 @@ const Performance = ({ wins, entireDeck, deckLearnChunk, mode, setUserDecision }
       try {
         const result = await masteryUpdate(wordsMasteriesList, deckId, deckLearnChunk)
         dispatch(openDeck(result.deck))
-        console.log(result.msg, result.deck)
+        //console.log(result.msg, result.deck)
       } catch (error) { console.log(error) }
     })(wordsMasteriesList, deckLearnChunk.deckId, {...deckLearnChunk, words: newWordSet, level, chunkIndex, levelUp})
 
@@ -66,7 +66,7 @@ const Performance = ({ wins, entireDeck, deckLearnChunk, mode, setUserDecision }
     const perf = Math.round(correct * 100 /wins.length)
     perfRefs.push(perf)
     perfRefs.sort((a, b) => a - b)
-    // console.log([perfLabels[perfRefs.indexOf(perf)], perfEmojis[perfRefs.indexOf(perf)]])
+    // //console.log([perfLabels[perfRefs.indexOf(perf)], perfEmojis[perfRefs.indexOf(perf)]])
     return [perfLabels[perfRefs.indexOf(perf)], perfEmojis[perfRefs.indexOf(perf)]]
   }
 
@@ -101,7 +101,7 @@ const Performance = ({ wins, entireDeck, deckLearnChunk, mode, setUserDecision }
 export default Performance
 
 const insane = (navigate, deckId) => {
-  console.log(deckId)
+  //console.log(deckId)
   const timerId = setTimeout(() => {
     navigate(`?deck=${deckId}`)
   }, 500);

@@ -1,64 +1,44 @@
 
 import storySettingsSelector from "../../../../external/yapping/utils/storySettings";
 
-class RoomSettings {
-    constructor({ roomID, roomUsers, isCreator }) {
-        this.id = roomID;
-        this.users = roomUsers;
-        this.creator = isCreator;
+class RoomSetup {
+    constructor({ id, users, creator }) {
+        this.id = id;
+        this.users = users,
+        this.creator = creator
     }
 
-    update(newSettings) {
-        Object.entries(newSettings).forEach(([settingKey, settingValue]) => {
+    update(newSetup) {
+        Object.entries(newSetup).forEach(([settingKey, settingValue]) => {
             if (settingValue !== undefined) this[settingKey] = settingValue;
         });
     }
 }
 
-class GameSettings {
-    constructor({ typeOfGame }) {
-        this.type = typeOfGame;
+class GameSetup {
+    constructor(setup) {
+        this.type = setup.typeOfGame;
+        this.room = new RoomSetup(setup.room)
+        this.data = gameSelector(setup) // || { update: () => {} };  // ✅ Avoids `undefined.update()`
     }
 
-    update(newSettings) {
-        Object.entries(newSettings).forEach(([settingKey, settingValue]) => {
-            if (settingValue !== undefined) this[settingKey] = settingValue;
-        });
-    }
-}
+    get players () { return this.room.users }
+    get creator () { return this.room.creator }
+    get id () { return this.room.creator}
 
-// ✅ Base class to remove repetition
-class BaseGameRoomSettings {
-    constructor(settings) {
-        this.room = new RoomSettings(settings);
-        this.game = new GameSettings(settings);
-    }
-
-    updateRoom(newSettings) {
-        this.room.update(newSettings);
-    }
-    
-    updateGame(newSettings) {
-        this.game.update(newSettings);
-    }
-}
-
-
-// ✅ Subclasses extend the base class
-class QuizGameSettings extends BaseGameRoomSettings {}
-
-class StoryGameSettings extends BaseGameRoomSettings {
-    constructor(settings) {
-        super(settings);
-        this.story = storySettingsSelector(settings)
+    update(newSetup) {
+        this.room.update(newSetup.room || {})
+        this.data.update(newSetup[this.type] || {})
+        return this
     }
 
 }
 
-class ChatGameSettings extends BaseGameRoomSettings {}
-
-export {
-    QuizGameSettings,
-    StoryGameSettings,
-    ChatGameSettings
+const gameSelector = (setup) => {
+   switch (setup.typeOfGame) {
+        case "story": return new storySettingsSelector(setup.story);
+        default: return null;
+   }
 }
+
+export default GameSetup

@@ -7,7 +7,7 @@ export default async (deckId) => {
         const { stories } = response.data;
         return stories
       } catch (error) {
-        console.log(error)
+        //console.log(error)
         throw new Error(error.message === 'Network Error' ? 'Network Error!' : 'Error. Try again!');
       }
 }

@@ -65,7 +65,7 @@ const Catalog = () => {
                 <h3>{game.title}</h3>
                 <img src={game.image} alt={game.title} />
                 <p>
-                    <p>{game.description}</p>
+                    <label>{game.description}</label>
                     <Button text="Play" handleClick={() => game.childCatalog ? setCatalog(game.childCatalog) : handleChooseGame(game.type)}/>
                 </p>
             </div>

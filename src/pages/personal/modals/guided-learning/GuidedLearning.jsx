@@ -23,7 +23,7 @@ const GuidedLearning = () => {
     handleRefresh(deckId)
   }, [deckId])  
 
-  console.log(learning)
+  //console.log(learning)
   useEffect(() => {
     if (userDecision) {
       setCraming(learning.level % CHUNK_TARGET_MASTERY_LEVEL === 0)

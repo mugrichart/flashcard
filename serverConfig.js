@@ -6,8 +6,8 @@ const PATH = servers.VITE_PATH
 
 const httpEndpoint = `http${servers.DEV ? "" : "s"}://${HOST}/${PATH}`
 
-const wsEndpoint = `ws${servers.DEV ? "" : "s"}://${HOST}/${PATH}`
+const wsEndpoint = `http${servers.DEV ? "" : "s"}://${HOST}`
 
-console.log(httpEndpoint, wsEndpoint)
+// //console.log(httpEndpoint, wsEndpoint)
 
 export { httpEndpoint, wsEndpoint }

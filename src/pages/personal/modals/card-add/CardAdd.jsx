@@ -39,7 +39,7 @@ const CardAdd = () => {
   }, [cards?.length]); 
   
   
-  console.log(deck)
+  //console.log(deck)
 
   return (
     <>

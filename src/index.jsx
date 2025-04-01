@@ -5,6 +5,9 @@ import store from './app/store';
 import './index.css';
 import App from './App';
 
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
+window.global = window
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -20,8 +20,8 @@ const fetchingExtensionData = (setExtensionWords, setIsExtensionOpen) => {
       if (event.data.type === 'FROM_EXTENSION') {
         const words = event.data.payload
         setExtensionWords(words || [])
-        console.log('Data received from extension: ')
-        console.log(words?.length + ' words: ' + words);
+        //console.log('Data received from extension: ')
+        //console.log(words?.length + ' words: ' + words);
         window.postMessage({ type: 'CLEAR_STORAGE' }, '*')
         window.removeEventListener('message', handleExtensionMessage)
       }
@@ -33,7 +33,7 @@ const fetchingExtensionData = (setExtensionWords, setIsExtensionOpen) => {
         if (attempt >= maxAttempts) {
             clearTimeout(timeout);
             setIsExtensionOpen(true);
-            console.log('Extension not found after multiple attempts.');
+            //console.log('Extension not found after multiple attempts.');
             return;
         }
         if (document.documentElement.dataset.hasExtension) {

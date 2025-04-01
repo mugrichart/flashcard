@@ -1,7 +1,7 @@
 import React from 'react'
 
 const McqCard = ({correctOption, selectedItem, cardMotion, blankedWordFinder, cardFormat, optionArray, handleItemClick, card, quizLength, quizType}) => {
-  // console.log(optionArray)
+  // //console.log(optionArray)
   return (
     <div className={`common-card ${cardMotion}`}>
       <div className="common-head">

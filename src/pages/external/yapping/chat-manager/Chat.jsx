@@ -5,7 +5,7 @@ import ChatRoom from "./components/ChatRoom"
 
 
 const Chat = ({ mode, storyGameUtils, setStoryGameUtils, players, setPlayers, playerID, isCreator }) => {
-  console.log(players)
+  //console.log(players)
   return (
     <ChatRoom playerID={playerID} players={players} setPlayers={setPlayers} storyGameUtils={storyGameUtils} setStoryGameUtils={setStoryGameUtils} isCreator={isCreator}/>
   )

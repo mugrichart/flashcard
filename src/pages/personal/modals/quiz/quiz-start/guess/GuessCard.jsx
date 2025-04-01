@@ -17,7 +17,7 @@ const GuessCard = ({ cardMotion, cardFormat, btmProSize, handleItemClick, topPro
 
     // useEffect(() => {
     //     if ( topProSize >= 100 && !playedYet) {
-    //         console.log('================offfff')
+    //         //console.log('================offfff')
     //         handleClick({})
     //     }
     // }, [topProSize])

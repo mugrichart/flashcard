@@ -38,17 +38,17 @@ const CardAddAuto = () => {
   const [searchingWord, setSearchingWord] = useState({word: '', context: ''})
   
   useEffect(() => {
-    console.log(openDeck?.deckName)
+    //console.log(openDeck?.deckName)
     if (!openDeck?.deckName) navigate('../new-deck')
   }, [openDeck])
 
   const handleDeleteExtraWord = (word) => {
     setExtraWords((prev) => {
-      console.log(prev)
+      //console.log(prev)
       const updatedWords = prev.filter(extraWord => !(extraWord.word === word.word && extraWord.context === word.context));
-      console.log(updatedWords)
+      //console.log(updatedWords)
       localStorage.setItem('temporary', JSON.stringify({ words: updatedWords }));
-      console.log(word, searchingWord)
+      //console.log(word, searchingWord)
       if (searchingWord?.word === word.word) { setSearchingWord({word: '', context: ''}); setSearchValue('') }
       return updatedWords;
     });
@@ -66,7 +66,7 @@ const CardAddAuto = () => {
   }, [extensionWords])
   
   const handleSearch = (e) => {
-    console.log(searchValue); 
+    //console.log(searchValue); 
     e.preventDefault();
     fetching(searchValue); 
     setSearchingWord({word: searchValue, context: ''})

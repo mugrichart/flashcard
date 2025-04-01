@@ -4,32 +4,31 @@ import "./WaitingRoom.css"
 import { useNavigate } from "react-router-dom"
 import Button from "../playing/components/game-button/Button"
 
-const WaitingRoom = ({ typeOfGame, gameID, players, isCreator, handleStart, error, playerID }) => {
+const WaitingRoom = ({ gameInfo, userID, handleStart, error }) => {
   const navigate = useNavigate()
 
   const handleCopy = () => {
-    console.log("nada2")
-    const joinLink = window.location.origin + window.location.pathname + `?gameID=${gameID}`
-    console.log(joinLink)
+    const joinLink = window.location.origin + window.location.pathname + `?gameID=${gameInfo?.id}`
+    //console.log(joinLink)
     navigator.clipboard.writeText(joinLink)
   }
   return (
     <div className="waiting-room" style={{padding: "1em"}}>
-        { gameID ?
+        { gameInfo?.id ?
           <>
             <div style={{display: "flex", justifyContent: "space-between"}}>
-              <label>Share Game ID: {gameID}</label>
+              <label>Share Game ID: {gameInfo.id}</label>
               <Button variant="contained" disableElevation color='primary' handleClick={handleCopy} text="Copy and Share Link" />
             </div> 
         
-            <h2>Waiting for {5 - players.length} players</h2>
+            <h2>Waiting for {5 - Object.values(gameInfo.players).length} players</h2>
             <ul style={{padding: "1em"}}>
-                {players.map((player, i) => 
+                {Object.values(gameInfo.players).reverse().map((player, i) => 
                 <li style={{background: "lightblue", padding: ".5em 1em", listStyleType: "none"}}
-                    key={player?.playerID + i || i}>{player?.playerID === playerID ? "You": player?.playerName} joined
+                    key={player.id + i || i}>{ player?.id === userID ? "You": player.username} joined
                 </li>)}
             </ul>
-            { (isCreator && players.length > 1 && typeOfGame !== "story") &&
+            { (gameInfo.creator === userID && gameInfo.players.length > 1 && gameInfo.type !== "story") &&
               <Button variant="contained" disableElevation color='primary' handleClick={handleStart} text="Start Game" />
             }
           </>

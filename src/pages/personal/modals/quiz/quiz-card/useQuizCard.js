@@ -96,7 +96,7 @@ const useQuizCard = (importedFormat, importedQuizType, importedQuizLength, order
             formatted.label0 + formatted.label1 + formatted.options?.reduce((acc, curr) => acc + (quizLength === 'long' ? curr[quizType] : curr.word), '') :
             labels[quizLength][quizType]  + formatted.question + formatted.answer
           setCardTime(totalChars.length * AVERAGE_READING_SPEED_PER_CHAR + BONUS_TIME)
-          console.log(formatted, '......formatted')
+          //console.log(formatted, '......formatted')
           setCardFormat(prev => ({...format, ...formatted}))
         }
         setOptionArray(formatted.options)
@@ -115,7 +115,7 @@ const useQuizCard = (importedFormat, importedQuizType, importedQuizLength, order
             clearInterval(interval); return prev
           }
           const percentage = prev + stepTime * 100 * 1000 / cardTime 
-          // console.log(`percentage: ${percentage}`)
+          // //console.log(`percentage: ${percentage}`)
           if (percentage > 100) {
             if ( !(hasPlayed.current || quizDone) ) handleItemClick({value: 'no selection because of timeout'}, false);  // true on automatic for toks, otherwise, false
             clearInterval(interval)

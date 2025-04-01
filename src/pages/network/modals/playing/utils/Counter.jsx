@@ -2,25 +2,21 @@
 import { Directions } from "@mui/icons-material";
 import { useState, useEffect } from "react"
 
-const Counter = ({ isCreator, status, setStatus, storyGameUtils, setStoryGameUtils }) => {
+const Counter = ({ gameInfo, setGameInfo, userID }) => {
     const [counter, setCounter] = useState(3)
 
     useEffect(() => {
-      let intervalId;
-      if (status === "countdown" || storyGameUtils.activity === "countdown") {
-          intervalId = setInterval(() => {
-              setCounter(counter - 1)
-              if (counter - 1 === 0) {
-                clearInterval(intervalId);
-                setStatus("playing");
-                setStoryGameUtils(prev => ({...prev, activity: "creating", direction: isCreator ? "server" : "client"}))
-              }
-          }, 1000);
-      }
+      let intervalId = setInterval(() => {
+          setCounter(counter - 1)
+          if (counter - 1 === 0) {
+            clearInterval(intervalId);
+            setGameInfo(prev => ({...prev, status: "in progress", source: userID }))
+          }
+      }, 1000);
 
       return () => clearInterval(intervalId)
 
-    }, [counter, status])
+    }, [counter])
 
   return <div style={{
     minWidth: "min(500px, 95vw)",

@@ -13,9 +13,9 @@ const useChatRoom = ({ gameID, thisUserId, players}) => {
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
-                console.log("Microphone access granted!");
+                //console.log("Microphone access granted!");
                 userStream.current = stream;
-                console.log("🎵 Tracks:", stream.getAudioTracks());
+                //console.log("🎵 Tracks:", stream.getAudioTracks());
                 // Create peer connections for all players except for this user
                 players.forEach(player => {
                     if (player.playerID !== thisUserId) createPeerConnection(player.playerID, true);
@@ -33,19 +33,19 @@ const useChatRoom = ({ gameID, thisUserId, players}) => {
 
 
         // WebSocketService.route('user-connected', userId => {
-        //     console.log('User connected:', userId);
+        //     //console.log('User connected:', userId);
         //     createPeerConnection(userId, true);
         // });
 
         WebSocketService.route('signal', ({ sender, signal }) => {
-            console.log(`🔄 Signal received from: ${sender}`);
-            console.log("📡 Signal content:", signal);
+            //console.log(`🔄 Signal received from: ${sender}`);
+            //console.log("📡 Signal content:", signal);
         
             if (!peerConnections.current[sender]) {
-                console.log(`📞 Creating new peer connection for ${sender}`);
+                //console.log(`📞 Creating new peer connection for ${sender}`);
                 createPeerConnection(sender, false);
             } else {
-                console.log(`✅ Found existing connection for ${sender}, signaling now.`);
+                //console.log(`✅ Found existing connection for ${sender}, signaling now.`);
             }
         
             peerConnections.current[sender].signal(signal);
@@ -73,7 +73,7 @@ const useChatRoom = ({ gameID, thisUserId, players}) => {
     }, []);
 
     const createPeerConnection = (targetID, initiator) => {
-        console.log(`🔧 Creating PeerConnection: ${targetID}, Initiator: ${initiator}`);
+        //console.log(`🔧 Creating PeerConnection: ${targetID}, Initiator: ${initiator}`);
     
         if (peerConnections.current[targetID]) {
             console.warn(`⚠️ Peer connection already exists for ${targetID}`);
@@ -87,17 +87,17 @@ const useChatRoom = ({ gameID, thisUserId, players}) => {
         });
     
         peer.on('signal', signal => {
-            console.log(`📡 Sending signal to ${targetID}`);
+            //console.log(`📡 Sending signal to ${targetID}`);
             WebSocketService.send('signal', { targetID, playerID: thisUserId, signal });
         });
     
         peer.on('stream', stream => {
-            console.log(`🎧 Received stream from ${targetID}`);
+            //console.log(`🎧 Received stream from ${targetID}`);
             setPeers(prev => ({ ...prev, [targetID]: stream }));
         });
     
         peer.on('connect', () => {
-            console.log(`✅ Connection established with ${targetID}`);
+            //console.log(`✅ Connection established with ${targetID}`);
         });
     
         peer.on('error', err => {
@@ -109,12 +109,12 @@ const useChatRoom = ({ gameID, thisUserId, players}) => {
     };
     
 
-    console.log("Current Peers:", peerConnections.current);
+    //console.log("Current Peers:", peerConnections.current);
     Object.entries(peerConnections.current).forEach(([id, peer]) => {
-        console.log(`Peer ${id} state:`, peer.connected ? "Connected ✅" : "Not connected ❌");
+        //console.log(`Peer ${id} state:`, peer.connected ? "Connected ✅" : "Not connected ❌");
     });
   
-    console.log("Browser Info:", navigator.userAgent);
+    //console.log("Browser Info:", navigator.userAgent);
 
     return { peers }
     

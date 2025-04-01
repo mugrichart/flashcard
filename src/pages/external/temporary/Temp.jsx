@@ -30,7 +30,7 @@ const Temp = () => {
       let interval;
       if (status === 'processing') {
         const totalTime = unprocessed.length * timePerCard // number of milliseconds
-        console.log(totalTime)
+        //console.log(totalTime)
         const intervalDelay = 1000
         const step = intervalDelay * 100 / totalTime
         interval = setInterval(() => {
@@ -53,11 +53,11 @@ const Temp = () => {
         const userId  = JSON.parse(localStorage.getItem('user')).userId
         const response = await axios.post(`${ httpEndpoint }/cards/temporary`, {userId, idType, id, deckLang, selected})
         const { id:deckId } = response.data;
-        console.log(deckId)
+        //console.log(deckId)
         setProcessed(prev => prev.filter(card => !selected.includes(card._id)))
         setChecked(false); setSelected([])
       } catch (error) {
-        console.log(error)
+        //console.log(error)
       }
     }
     
@@ -108,9 +108,9 @@ const processing = async (setProgress, beforeProcess, setUnprocessed, setProcess
     axios.get(`${ httpEndpoint }/cards/app`)
       .then(res => {
         const {timePerCard:timesPerCard} = res.data;
-        console.log(timesPerCard);
+        //console.log(timesPerCard);
         const timePerCard = timesPerCard ? timesPerCard.reduce((acc, curr) => acc + curr, 0) / timesPerCard.length : null
-        console.log(timePerCard)
+        //console.log(timePerCard)
         setTimePerCard((prev) => timePerCard || prev)
         setStatus('processing')
       })
@@ -127,7 +127,7 @@ const processing = async (setProgress, beforeProcess, setUnprocessed, setProcess
     setStatus('processed')
   } catch (error) {
     setStatus('processing error')
-    console.log(error.message)
+    //console.log(error.message)
   }
 }
 
@@ -135,7 +135,7 @@ const fetchingExtensionData = (setSearching, setUnprocessed, setProcessed, setTe
     const handleExtensionMessage = (event) => {
       if (event.data.type === 'FROM_EXTENSION') {
         const words = event.data.payload
-        console.log('Data received from extension: ')
+        //console.log('Data received from extension: ')
         if (words && words.length > 0) console.log(words.length + ' words. e.g: ' + words[0].word + ' - ' + words[0].context);
         const { httpEndpoint } = { httpEndpoint };
         const userId  = JSON.parse(localStorage.getItem('user')).userId
@@ -158,7 +158,7 @@ const fetchingExtensionData = (setSearching, setUnprocessed, setProcessed, setTe
     const retrievingExtension = () => {
       if (document.documentElement.dataset.hasExtension) {
         document.getElementById('extension-div-id').style.display = 'none'
-        console.log('did it')
+        //console.log('did it')
         window.postMessage({ type: 'REQUEST_DATA_FROM_EXTENSION' }, '*');
       } else {
         document.getElementById('extension-btn-id').addEventListener('click', retrievingExtension)

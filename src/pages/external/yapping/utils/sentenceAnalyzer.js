@@ -9,32 +9,32 @@ export const getKeywords = (fullSentenceSplit, blankedSentenceSplit, currSentenc
     let sentIndex = 0
     let blankIndex = 0
     const missing = []
-    // console.log('----------------------------started all over')
-    // console.log(fullSentenceSplit, blankedSentenceSplit, sentIndex, currSentence)
+    // //console.log('----------------------------started all over')
+    // //console.log(fullSentenceSplit, blankedSentenceSplit, sentIndex, currSentence)
     while (blankIndex < blankedSentenceSplit.length && sentIndex < fullSentenceSplit.length) {
-        // console.log(fullSentenceSplit, blankedSentenceSplit, sentIndex, currSentence)
+        // //console.log(fullSentenceSplit, blankedSentenceSplit, sentIndex, currSentence)
         const currWord = fullSentenceSplit[sentIndex]
         const currBlank = blankedSentenceSplit[blankIndex]
         if (currWord !== currBlank) {
             let cont = currWord
-            // console.log(blankedSentenceSplit[blankIndex + 1], blankIndex+1)
+            // //console.log(blankedSentenceSplit[blankIndex + 1], blankIndex+1)
             if (blankIndex + 1 === blankedSentenceSplit.length) cont = fullSentenceSplit.slice(sentIndex, fullSentenceSplit.length).join(' ')
             else {
                 while ( !(blankedSentenceSplit[blankIndex+1] === fullSentenceSplit[sentIndex + 1] || sentIndex < fullSentenceSplit.length && ['_', '-', '['].includes(blankedSentenceSplit[blankIndex + 1][0]) )) {
-                    // console.log('--------', cont, '/ ',  blankedSentenceSplit[blankIndex + 1], fullSentenceSplit[sentIndex + 1])
-                    // console.log('---------', fullSentenceSplit, blankedSentenceSplit, sentIndex)
+                    // //console.log('--------', cont, '/ ',  blankedSentenceSplit[blankIndex + 1], fullSentenceSplit[sentIndex + 1])
+                    // //console.log('---------', fullSentenceSplit, blankedSentenceSplit, sentIndex)
                     sentIndex++;
                     if (fullSentenceSplit[sentIndex]) {
                         cont += ' ' + fullSentenceSplit[sentIndex]
-                        // console.log('...............yeah', cont)
+                        // //console.log('...............yeah', cont)
                     }
                 }
             }
             
-            // console.log('bibiib............', cont, sentIndex, blankIndex)
+            // //console.log('bibiib............', cont, sentIndex, blankIndex)
             missing.push(cont)
         }
-        // console.log('.....olol.....indices: ', sentIndex, blankIndex, fullSentenceSplit[sentIndex], blankedSentenceSplit[blankIndex])
+        // //console.log('.....olol.....indices: ', sentIndex, blankIndex, fullSentenceSplit[sentIndex], blankedSentenceSplit[blankIndex])
         sentIndex++;
         blankIndex++;
     }
@@ -65,7 +65,7 @@ export const removeKeywords = (fullSentenceSplit, blankedSentenceSplit, currSent
     const sent = []
     const corrSent = []
     while (blankIndex < blankedSentenceSplit.length && sentIndex < fullSentenceSplit.length) {
-        // console.log(fullSentenceSplit, blankedSentenceSplit, sentIndex, currSentence)
+        // //console.log(fullSentenceSplit, blankedSentenceSplit, sentIndex, currSentence)
         const currWord = fullSentenceSplit[sentIndex]
         const currBlank = blankedSentenceSplit[blankIndex]
         if (currWord !== currBlank) {

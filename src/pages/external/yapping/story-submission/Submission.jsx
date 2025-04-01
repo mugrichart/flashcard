@@ -2,21 +2,24 @@ import { useRef } from "react";
 import "./Submission.css"
 import { Button } from "@mui/material"
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import StorySetup from "../utils/storySettings";
 
-const Submission = ({storySettings, setStorySettings, mode , isLeadAuthor, title, setTitle, story, checked, setChecked, handleSubmit, setActivity}) => {
-  const existingTitle = useRef(storySettings.metadata.title)
+const Submission = ({storySettings, setStorySettings, externalSource,
+                    gameInfo, setGameInfo, userID,
+                    checked, setChecked, handleSubmit}) => {
+  const existingTitle = useRef(storySettings.title)
   return (
     <div className="submission">
       <h3><AutoAwesomeIcon />Final touches</h3>
       <>
         {
-            existingTitle.current ?
-            <h3>Title: {existingTitle.current}</h3> :
+            !(existingTitle.current || gameInfo.creator !== userID) &&
+            // <h3>Title: {storySettings.title}</h3> :
             <span>
               <label htmlFor="">Complete the title</label>
               <input
                   type="text" name="" id="" placeholder='Title of the story' className='title'
-                  onChange={(e) => setStorySettings(prev => ({...prev, metadata: {...prev.metadata, title: e.target.value}}))}
+                  onChange={(e) => setStorySettings(prev => prev.rebuild({ title: e.target.value }))}
               />
             </span>
         }
@@ -31,13 +34,13 @@ const Submission = ({storySettings, setStorySettings, mode , isLeadAuthor, title
       </span>
       <h4>Your story</h4>
       <p id="text-container">
-        {storySettings.state.story.map(sentenceObj => sentenceObj.sentence).join(' ')}
+        {storySettings.details.map(sentenceObj => sentenceObj.sentence).join(' ')}
       </p>
-      { (isLeadAuthor || !mode) &&
+      { !externalSource && storySettings.title &&
         <Button
         className="submission--btn"
         variant="contained" color='primary' disableElevation
-        onClick={() => isLeadAuthor ? setActivity("uploading") : handleSubmit()}
+        onClick={() => gameInfo ? setStorySettings(prev => prev.rebuild({step: "uploading"})) : handleSubmit()}
       >
         Submit Story
       </Button>

@@ -16,6 +16,8 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
+    "buffer": "^6.0.3",
+    "lodash": "^4.17.21",
     "pdfjs-dist": "^3.11.174",
     "primereact": "^9.6.0",
     "react": "^18.2.0",
@@ -27,6 +29,7 @@
     "react-spinner-material": "^1.4.0",
     "redux-logger": "^3.0.6",
     "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.8.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -53,6 +56,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "vite-plugin-node-polyfills": "^0.23.0"
   }
 }

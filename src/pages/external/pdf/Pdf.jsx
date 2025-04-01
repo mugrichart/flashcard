@@ -95,11 +95,11 @@ const PdfViewer = ({ selectedFile, onSelectFile, filePaths, onFileClick }) => {
   });
 
   const handleWordApprove = (e) => {
-    console.log(word, context)
+    //console.log(word, context)
     if (word && context) {
       const temp = JSON.parse(localStorage.getItem('temporary'));
       const words = [...new Set(temp?.words || [])];
-      console.log(words)
+      //console.log(words)
       localStorage.setItem('temporary', JSON.stringify({ words: [...words, {word, context}] }));
       setInfo({ exists: true, type: 'info', message: 'Saved successfully!' });
       setWord(null); setContext(null)

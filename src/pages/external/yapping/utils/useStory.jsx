@@ -9,17 +9,10 @@ import { StoreSharp } from '@mui/icons-material';
 export default ({ 
     storySettings, setStorySettings,
     mode, isLeadAuthor,
-    selectedWords, words,
-    info, setInfo,
-    story, 
-    activity, setActivity,
+    info, setInfo, 
     okAttempt, setOkAttempt,
-    title, setTitle,
-    currSentence, setAiHelp, aiHelp, 
-    aiOptionsDisplay, setAiOptionsDisplay, 
-    setChecked, checked, handlePartSelection, 
-    handleSubmit, setCurrSentence,
-    callUponAi, handleApproval,
+    handlePartSelection,
+    callUponAi,
     attempt, setAttempt,
     correctSentence, setCorrectSentence
   }) => {
@@ -32,12 +25,11 @@ export default ({
   const { voices, speak, pause, resume, cancel } = useTextToSpeech();
 
   useEffect(() => {
-    if (storySettings.state.mode == "create") setSentenceIndex(storySettings.state.story.length)
-    else {
-      setAttempt(storySettings.state.sentenceInPractice.blanked?.split(' '));
-      setCorrectSentence(storySettings.state.sentenceInPractice.sentence?.split(' '))
+    if (storySettings.mode === "practice") {
+      setAttempt(storySettings.sentenceInPractice.blanked?.split(' '));
+      setCorrectSentence(storySettings.sentenceInPractice.sentence?.split(' '))
     }
-  }, [storySettings.state.story])
+  }, [storySettings.sentenceInPractice])
 
   useEffect(() => {
     setVoice(voices[1]);
@@ -48,53 +40,56 @@ export default ({
   const sayIt = useCallback((script) => {
     const scriptToSpeak = storySettings.mode === 'create' ? script.join(' ') : script
     setTimeout(() => speak(scriptToSpeak, voice), 5000)
-  }, [activity, voice]);
+  }, [storySettings.mode, voice]);
 
   useEffect(() => {
-    if (storySettings.state.mode === "create" || !attempt.length) return;
+    if (storySettings.mode === "create" || !attempt.length) return;
     const firstInput = document.getElementsByClassName('attempt-input')[0]
     firstInput?.focus()
     if (firstInput?.value?.startsWith('__')) firstInput.select()
     if (attempt?.join(' ') === correctSentence.join(' ')) {
+      console.error(attempt)
       const approvedAttempt = okAttempt + ' ' + attempt.join(' ')
       setOkAttempt(approvedAttempt);
       
-      if (storySettings.state.sentenceIndex === storySettings.state.story.length - 1) {
+      if (storySettings.sentenceIndex === storySettings.details.length - 1) {
         cheerSound.play()
         setInfo({exists: true, type: 'success', message: 'Congratulations! You have successfully filled all the blanks in the story.'})
-        setStorySettings(prev => ({...prev, state: {...prev.state, mode: "read"}}))
+        setStorySettings(prev => prev.rebuild({mode: "read"}))
         return sayIt(`Congratulations for completing this story. I am now going to recount the whole story for you: ${approvedAttempt}`)
       }
      
-      setStorySettings(prev => ({...prev, state: {...prev.state, sentenceIndex: prev.state.sentenceIndex + 1, sentenceInPractice: prev.state.story[prev.state.sentenceIndex + 1] }}))
+      // setStorySettings(prev => prev.rebuild({sentenceIndex: prev.sentenceIndex + 1, sentenceInPractice: prev.details[prev.sentenceIndex + 1] }))
+      setStorySettings(prev => prev.nextSentence(storySettings.sentenceIndex) || prev)
     }
   }, [attempt])
 
 
   useEffect(() => {
-      if (!(storySettings.state.mode === 'practice')) return
-      const [sentenceWithoutKeywords, sentenceWithKeywords] = removeKeywords(storySettings.state.sentenceInPractice.sentence?.split(' '), storySettings.state.sentenceInPractice.blanked?.split(' ').filter(word => !['.', ',', ';', ']', '"', ')', '}', '?', '!'].includes(word)))
-      if (storySettings.state.sentenceInPractice.blanked) {
+      if (!(storySettings.mode === 'practice')) return
+      const [sentenceWithoutKeywords, sentenceWithKeywords] = removeKeywords(storySettings.sentenceInPractice.sentence?.split(' '), storySettings.sentenceInPractice.blanked?.split(' ').filter(word => !['.', ',', ';', ']', '"', ')', '}', '?', '!'].includes(word)))
+      //console.log(sentenceWithKeywords, sentenceWithoutKeywords)
+      if (storySettings.sentenceInPractice.blanked) {
         setAttempt(sentenceWithoutKeywords)
         setCorrectSentence(sentenceWithKeywords)
       }
     }
-  ,[storySettings.state.sentenceInPractice])
+  ,[storySettings.sentenceIndex])
 
   const FinishButton = () => {
     const chosenButton = {
       text: "", whereTo: ""
     }
-    if (storySettings.state.mode === "create") {
-      const passedMinCheck = storySettings.state.story?.length >= STORY_MINIMUM_NUMBER_OF_SENTENCES; // The story has the minimum number of sentences
-      const wordsFinished = words.length === 0 && StoreSharp.state.story?.length > 0 // words finished, but there is some story
-      const notWriting = !currSentence.sentence;
+    if (storySettings.mode === "create") {
+      const passedMinCheck = storySettings.details?.length >= STORY_MINIMUM_NUMBER_OF_SENTENCES; // The story has the minimum number of sentences
+      const wordsFinished = storySettings.words.length === 0 && StoreSharp.story?.length > 0 // words finished, but there is some story
+      const notWriting = !storySettings.sentenceInProgress.sentence;
       if ((passedMinCheck || wordsFinished) && (isLeadAuthor || !mode) && notWriting) {
         chosenButton.text = "Submit story"
         chosenButton.chosenActivity = "submit"
       }
     } 
-    else if (storySettings.state.mode === "read") {
+    else if (storySettings.mode === "read") {
       chosenButton.text = "Practice again"
       chosenButton.chosenActivity = "catalog"
     }
@@ -102,7 +97,7 @@ export default ({
     if (chosenButton.text) return (
       <Button
         variant="contained" color='primary' disableElevation 
-        onClick={() => setStorySettings(prev => ({...prev, state: {...prev.state, step: chosenButton.chosenActivity}}))}
+        onClick={() => setStorySettings(prev => prev.rebuild({step: chosenButton.chosenActivity}))}
       >
         {chosenButton.text}
       </Button>
@@ -114,12 +109,8 @@ export default ({
     storySettings, setStorySettings,
     attempt, setAttempt,
     correctSentence,
-    okAttempt, activity, setActivity, currSentence, 
-    setCurrSentence, story, handleApproval, handlePartSelection, callUponAi, 
-    selectedWords, isLeadAuthor, mode, words,
-    sentenceIndex, setSentenceIndex, 
-    info,
-    FinishButton
+    handlePartSelection, callUponAi, 
+    info, FinishButton
   }
 
 }

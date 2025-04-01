@@ -8,7 +8,7 @@ export const useSearchWords = (trackedSearchValue, deckLang, delay=2000) => {
     // const [debouncedValue, setDebouncedValue] = useState(searchValue)
     const [status, setStatus] = useState('idle') // idle  | loading | success | error
 
-    // //console.log(deckLang)
+    // ////console.log(deckLang)
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -20,12 +20,12 @@ export const useSearchWords = (trackedSearchValue, deckLang, delay=2000) => {
     }, [trackedSearchValue]);
 
     const fetching = (searchValue) => {
-        console.log(searchValue)
+        //console.log(searchValue)
         if (searchValue)  {
             setStatus('loading')
             axios.get(`${ httpEndpoint }/words/search?language=${deckLang}&word=${searchValue}`)
                 .then(res => {
-                // console.log(res.data.searchWords)
+                // //console.log(res.data.searchWords)
                 setSearchWords(res.data.searchWords)
                 setStatus('success')      
             }) 
@@ -38,11 +38,11 @@ export const useSearchWords = (trackedSearchValue, deckLang, delay=2000) => {
 
     // useEffect(() => {
     //     if (debouncedValue)  {
-    //         console.log(deckLang)
+    //         //console.log(deckLang)
     //         setLoading(true)
     //         axios.get(`${ httpEndpoint }/words/search?language=${deckLang}&word=${debouncedValue}`)
     //             .then(res => {
-    //             // //console.log(res.data.searchWords)
+    //             // ////console.log(res.data.searchWords)
     //             setSearchWords(res.data.searchWords)
     //             setLoading(false)      
     //         }) 
