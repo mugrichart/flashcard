@@ -1,6 +1,7 @@
 import PlayersDashboard from "../../components/player-state/PlayerDashboard"
 
 import QuizCard from "../../../../../personal/modals/quiz/quiz-card/QuizCard"
+import { useDispatch } from "react-redux";
 import { StoryView } from "../../Playing";
 
 import formatRouter from "../../utils/formatRouter"
@@ -8,17 +9,23 @@ import formatRouter from "../../utils/formatRouter"
 import WebSocketService from "../../../../../../api/ws";
 
 import { useState, useEffect } from "react";
+import { openDeck } from "../../../../../../features/personal/deck/deckSlice";
 
 const PlayingManager = ({ gameInfo, setGameInfo, userID, typeOfGame, deck, gameID, playerID, storyGameUtils, setStoryGameUtils, ChatView }) => {
     // //console.log("....Playing")
     const [afterUpdateFunc, setAfterUpdateFunc ] = useState(null)
+    const dispatch = useDispatch()
     // const [players, setPlayers] = useState([])
     
-    const [voting, setVoting] = useState(false)
-  
+    const [on, setOn] = useState(false)
+    const [status, setStatus] = useState('')
+    
     const handlePlay = (afterPlayHandle) => { // The call back is what happens after the server responds to the play
       const [ correct, registerPlay ] = afterPlayHandle
-      WebSocketService.send("play", {playerID, gameID, isCorrect: correct})
+      WebSocketService.send("game/in progress", { gameInfo, isCorrect: correct, source: userID })
+      setStatus('waiting'); setOn(true)
+      // setGameInfo(prev => ({...prev, data: {...prev.data, isCorrect: correct}, source: userID}))
+      // WebSocketService.send("play", {playerID, gameID, isCorrect: correct})
       setAfterUpdateFunc(() => registerPlay)
     }
   
@@ -51,31 +58,43 @@ const PlayingManager = ({ gameInfo, setGameInfo, userID, typeOfGame, deck, gameI
     // }, [storyGameUtils.currSentences])
 
     useEffect(() => {
+      if (gameInfo.type !== "quiz") return
 
       const handleInProgress = (payload) => {
-        console.log("Payload received:", payload);
+        console.log("Payload received:", payload.data?.deck);
+        dispatch(openDeck({_id: payload.data.deck.deckId, words: payload.data.deck.words}))
         setGameInfo(prev => payload);
+        if (afterUpdateFunc) {
+                afterUpdateFunc();
+                setOn(false)
+        }
+      }
+
+      const handleRedirect = (payload) => {
+        setGameInfo(payload)
       }
       
-      if (gameInfo.creator === userID) WebSocketService.send("game/in progress", { gameInfo, beginning: true})
+      if (gameInfo.creator === userID && gameInfo.type === "story") WebSocketService.send("game/in progress", { gameInfo, beginning: true})
       WebSocketService.registerEvent("game/in progress", handleInProgress)
+      WebSocketService.registerEvent("game/in progress/redirect", handleRedirect)
 
       return () => {
         WebSocketService.unregisterEvent("game/in progress")
+        WebSocketService.unregisterEvent("game/in progress/redirect")
       }
-    }, [])
+    }, [afterUpdateFunc])
     
   
     return (
       <>
         
         <PlayersDashboard gameInfo={gameInfo} userID={userID} />
-        {gameInfo.type === "quiz" ?
+        {(gameInfo.type === "quiz" && gameInfo.status === "in progress") ?
           <QuizCard 
             importedFormat={'placeholder'} importedQuizType={'placeholder'}
-            importedQuizLength={'placeholder'} order={'placeholder'} deckLearnChunk={deck} mode={"quiz-game"} 
+            importedQuizLength={'placeholder'} order={'placeholder'} deckLearnChunk={gameInfo.data.deck.learning} mode={"quiz-game"} 
             formatRouter={formatRouter} setUserDecision={''} 
-            handlePlay={handlePlay}
+            handlePlay={handlePlay} deckId={gameInfo.data.deck._id} words={gameInfo.data.deck.words}
           /> :
           gameInfo.type === "story" ?
           <StoryView gameInfo={gameInfo} setGameInfo={setGameInfo} userID={userID} /> :
@@ -83,18 +102,19 @@ const PlayingManager = ({ gameInfo, setGameInfo, userID, typeOfGame, deck, gameI
           // <Yapping isGameCreator={isCreator} mode={"game-creating"} storyGameUtils={storyGameUtils} setStoryGameUtils={setStoryGameUtils}/>
         }
         {
-          <Poll gameInfo={gameInfo} setGameInfo={setGameInfo} /> 
+          <Poll gameInfo={gameInfo} setGameInfo={setGameInfo} on={on} setOn={setOn} status={status} setStatus={setStatus} /> 
         }
       </>
     ) 
   }
   
-  const Poll = ({ gameInfo, setGameInfo }) => {
-    const [on, setOn] = useState(false)
-    const [status, setStatus] = useState('')
+  const Poll = ({ gameInfo, setGameInfo, on, setOn, status, setStatus }) => {
+    
     const [options, setOptions ] = useState([])
 
     useEffect(() => {
+
+      if (gameInfo.type !== "story") return
       
       const retrieveSentences = (payload) => {
         const { poll } = payload;

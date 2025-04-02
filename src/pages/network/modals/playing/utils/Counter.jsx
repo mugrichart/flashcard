@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 
 const Counter = ({ gameInfo, setGameInfo, userID }) => {
     const [counter, setCounter] = useState(3)
-
     useEffect(() => {
       let intervalId = setInterval(() => {
           setCounter(counter - 1)

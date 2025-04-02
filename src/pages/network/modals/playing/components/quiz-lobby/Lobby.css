@@ -1,0 +1,30 @@
+
+.lobby {
+    padding: 2em;
+}
+
+.lobby ul {
+    border: 1px ;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.deck {
+    background-color: #C0D7DA;
+    color: #345C70;
+    width: 170px;
+    height: 150px;
+    margin: 20px 5px 0 15px;
+    padding: 10px;
+    box-shadow: 0 3px 0 rgba(11, 14, 15, 0.482);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: x-large;
+    user-select: none;
+}
+
+ul .deck {
+    cursor: pointer;
+}

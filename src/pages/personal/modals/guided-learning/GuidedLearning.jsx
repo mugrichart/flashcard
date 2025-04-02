@@ -34,7 +34,11 @@ const GuidedLearning = () => {
       userDecision ? (
         craming ?
           <CardLearn deckLearningChunk={{deckName, words: learning.words}}  setCraming={setCraming} /> :
-          learning.words.length && <QuizCard importedFormat={'placeholder'} importedQuizType={'placeholder'} importedQuizLength={'placeholder'} order={'placeholder'} deckLearnChunk={learning} mode="guided-learning" formatRouter={formatRouter} setUserDecision={setUserDecision} />
+          learning.words.length && 
+          <QuizCard importedFormat={'placeholder'} importedQuizType={'placeholder'} importedQuizLength={'placeholder'} order={'placeholder'} 
+                deckLearnChunk={learning} mode="guided-learning" formatRouter={formatRouter} setUserDecision={setUserDecision} 
+                deckId={deckId} words={words}
+          />
         ) :
         <LearningDashboarb deckName={deckName} learning={learning} words={words} setUserDecision={setUserDecision}/>
   )

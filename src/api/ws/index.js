@@ -21,10 +21,18 @@ class WebSocketService {
     this.socket.connect(); // Now start connection
   }
 
+  static logWrapper(event, handler) {
+    return (...args) => {
+      console.log(`📥 INBOUND: ${event.toUpperCase()}`);
+      handler(...args);
+    };
+  }
+
   static registerEvent(event, handler) {
     if (!this.routes.has(event)) {
-      this.routes.set(event, handler);
-      this.socket.on(event, handler);
+      const wrappedHandler = this.logWrapper(event, handler);
+      this.routes.set(event, wrappedHandler);
+      this.socket.on(event, wrappedHandler);
     }
   }
 
@@ -44,9 +52,9 @@ class WebSocketService {
         //console.log("⏳ Throttled:", method.toUpperCase());
         return;
       }
-      console.log(method.toUpperCase(), "=>", payload)
+      console.log("📥 OUTBOUND:" + method.toUpperCase())
       this.socket.emit("message", {method, payload});
-      console.info("📤 Sent:", method.toUpperCase());
+      // console.info("📤 Sent:", method.toUpperCase());
       this.lastSendTimes.set(method, now);
     } else {
       console.warn("⚠️ Socket not connected, queuing:", method.toUpperCase());

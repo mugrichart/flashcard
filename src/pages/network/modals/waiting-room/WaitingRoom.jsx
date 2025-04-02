@@ -28,7 +28,7 @@ const WaitingRoom = ({ gameInfo, userID, handleStart, error }) => {
                     key={player.id + i || i}>{ player?.id === userID ? "You": player.username} joined
                 </li>)}
             </ul>
-            { (gameInfo.creator === userID && gameInfo.players.length > 1 && gameInfo.type !== "story") &&
+            { (gameInfo.creator === userID && Object.keys(gameInfo.players).length > 1 && gameInfo.data.deck?.deckName && gameInfo.type === "quiz") &&
               <Button variant="contained" disableElevation color='primary' handleClick={handleStart} text="Start Game" />
             }
           </>

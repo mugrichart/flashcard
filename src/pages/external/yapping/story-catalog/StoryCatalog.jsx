@@ -44,7 +44,7 @@ const StoryCatalog = ({ deckId, setStorySettings, gameInfo }) => {
               {stories?.map((story, i) => (
                   <span
                       key={i}
-                      onClick={() => {
+                      onClick={() => gameInfo ||
                           setStorySettings( prev => prev.rebuild(
                             {
                               ...story,
@@ -52,7 +52,7 @@ const StoryCatalog = ({ deckId, setStorySettings, gameInfo }) => {
                               step: "practice",
                             }
                           ))
-                      }}
+                      }
                       className="story--span"
                   >
                   {story.title}

@@ -84,6 +84,7 @@ export default () => {
     navigate(`options/?deck=${deck._id}`)
     fetchDeck(deckId)
       .then(deck => {
+        console.log(deck)
         dispatch(openDeck(deck))
       })
       .catch(error => setError(error.message === 'network error' ? 'Network error' : 'Oops! Try again!'))

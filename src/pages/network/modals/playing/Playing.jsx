@@ -9,6 +9,7 @@ import PlayingManager from "./components/playing-manager/PlayingManager";
 import { useSelector } from "react-redux";
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
+import Lobby from "./components/quiz-lobby/Lobby";
 
 const Playing = () => {
   const [searchParams] = useSearchParams();
@@ -34,40 +35,25 @@ const Playing = () => {
   useEffect(() => {
     if (playerID) {
       if (gameID) WebSocketService.send("game/join", { userID, id: gameID, username, avatar });
-      else if (isCreator) WebSocketService.send("game/create", { userID, username, avatar, type: typeOfGame, words: deck.words?.map((wordObj) => wordObj.word) });
+      else if (isCreator && deck) WebSocketService.send("game/create", { userID, username, avatar, type: typeOfGame, deck, words: deck.words?.map((wordObj) => wordObj.word) });
       else if (randomGame) WebSocketService.send("game/join", { playerID, mode: "random", playerName, avatar });
     }
 
     const handleJoin = (payload) => {
+      // console.log("Payload received:", payload);
       setGameInfo(prev => ({...payload}));
     };
 
     const handleLobby = (payload) => {
-      console.log("Payload received:", payload);
+      // console.log("Payload: ", payload)
       setGameInfo(prev => payload);
     };
 
     
     const handlePostGame = (payload) => {
-      console.log(payload)
+      // console.log(payload)
       setGameInfo(prev => payload)
     }
-
-    const handleCommand = (payload) => {
-      if (payload.command === "start") {
-        setStoryGameUtils((prev) => ({ ...prev, script: payload.script, direction: "client" }));
-        setStatus("countdown");
-      }
-    };
-
-    const handleSwitchActivity = (payload) => {
-      setStoryGameUtils((prev) => ({
-        ...prev,
-        ...payload,
-        direction: "client",
-        script: { ...prev.script, scriptIndex: payload.scriptIndex },
-      }));
-    };
 
     const eventsSetup = () => {
       
@@ -76,8 +62,8 @@ const Playing = () => {
       WebSocketService.registerEvent("game/join", handleJoin);
       WebSocketService.registerEvent("game/lobby", handleLobby);
       WebSocketService.registerEvent("game/post-game", handlePostGame);
-      WebSocketService.registerEvent("command", handleCommand);
-      WebSocketService.registerEvent("switch-activity", handleSwitchActivity);
+      // WebSocketService.registerEvent("command", handleCommand);
+      // WebSocketService.registerEvent("switch-activity", handleSwitchActivity);
 
     }
 
@@ -88,8 +74,8 @@ const Playing = () => {
       WebSocketService.unregisterEvent("game/join");
       WebSocketService.unregisterEvent("game/lobby");
       WebSocketService.unregisterEvent("game/post-game");
-      WebSocketService.unregisterEvent("command");
-      WebSocketService.unregisterEvent("switch-activity");
+      // WebSocketService.unregisterEvent("command");
+      // WebSocketService.unregisterEvent("switch-activity");
       // WebSocketService.send("disconnect", { gameID, playerID }); //Uncaught Error: "disconnect" is a reserved event name
       WebSocketService.close();
     };
@@ -122,7 +108,8 @@ const Playing = () => {
   }, [gameInfo?.status])
 
   const handleStart = () => {
-    WebSocketService.send("command", { command: "start", gameID, typeOfGame, words: deck.words, players });
+    console.log("...starting")
+    setGameInfo(prev => ({...prev, data: {...prev.data, step: "quiz"}, source: userID}))
   };
 
   const ChatView = (
@@ -141,12 +128,14 @@ const Playing = () => {
     <>
       { gameInfo?.status === "lobby" && gameInfo?.data?.step === "onboarding" ? (
         <>
-          {["story", "chat"].includes(gameInfo.type) && <StoryView gameInfo={gameInfo} setGameInfo={setGameInfo} userID={userID}/> }
+          {["story", "chat"].includes(gameInfo.type) ? <StoryView gameInfo={gameInfo} setGameInfo={setGameInfo} userID={userID}/> :
+            <Lobby deck={gameInfo?.data?.deck} setGameInfo={setGameInfo} gameInfo={gameInfo}/>
+          }
           <WaitingRoom gameInfo={gameInfo} userID={userID} handleStart={handleStart} error={error} />
         </>
       ) : (
         <>
-          { gameInfo?.data?.step === "create" && gameInfo.status === "lobby" ? 
+          { (gameInfo?.data?.step === "create" || gameInfo?.data?.step === "quiz") && gameInfo.status === "lobby" ? 
             <Counter gameInfo={gameInfo} setGameInfo={setGameInfo} userID={userID}/>
            : gameInfo?.type ? (
             <PlayingManager

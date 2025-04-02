@@ -13,8 +13,9 @@ import { AVERAGE_READING_SPEED_PER_CHAR, READING_BONUS_TIME as BONUS_TIME } from
 const enteringAudio = new Audio('/sounds/woosh.wav')
 const tickAudio = new Audio('/sounds/tick-tock.wav')
 
-const useQuizCard = (importedFormat, importedQuizType, importedQuizLength, order, deckLearnChunk, mode, formatRouter, handlePlay) => {
-    const { _id: deckId, words: deck } = useSelector(state => state.deck.openDeck)
+const useQuizCard = (importedFormat, importedQuizType, importedQuizLength, order, deckLearnChunk, mode, formatRouter, handlePlay, deckId, deck) => {
+    // const { _id: deckId, words: deck } = useSelector(state => state.deck.openDeck)
+    // console.log(deckId, deck)
     const [card, setCard] = useState(deckLearnChunk[0]);
     const [correctOption, setCorrectOption] = useState(null);
     const [selectedItem, setSelectedItem] = useState({});

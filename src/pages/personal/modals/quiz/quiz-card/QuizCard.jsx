@@ -11,7 +11,7 @@ import './QuizCard.css';
 import useQuizCard from './useQuizCard';
 
 
-const QuizCard = ({importedFormat, importedQuizType, importedQuizLength, order, deckLearnChunk, mode, formatRouter, setUserDecision, handlePlay }) => {
+const QuizCard = ({importedFormat, importedQuizType, importedQuizLength, order, deckLearnChunk, mode, formatRouter, setUserDecision, handlePlay, deckId, words }) => {
     const   {
       correctOption, 
       selectedItem,
@@ -22,7 +22,6 @@ const QuizCard = ({importedFormat, importedQuizType, importedQuizLength, order, 
       cardFormat,
       cardMotion,
       deck,
-      deckId,
       colors,
       handleItemClick,
       blankedWordFinder,
@@ -31,7 +30,7 @@ const QuizCard = ({importedFormat, importedQuizType, importedQuizLength, order, 
       quizType,
       quizLength,
       wins
-    } = useQuizCard(importedFormat, importedQuizType, importedQuizLength, order, deckLearnChunk.words, mode, formatRouter, handlePlay)
+    } = useQuizCard(importedFormat, importedQuizType, importedQuizLength, order, deckLearnChunk.words, mode, formatRouter, handlePlay, deckId, words)
 
     return (
          deck ?

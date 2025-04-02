@@ -3,7 +3,11 @@ import axios from "axios";
 
 export default async (userId, myCardsOnly, language) => {
     try {
-        const response = await axios.get(`${ httpEndpoint }/cards/decks?user=${userId}&creator=${myCardsOnly ? userId : ''}&language=${language || ''}`);
+        const query = {}
+        if (userId) query['user'] = userId
+        if (myCardsOnly) query['creator'] = userId
+        if (language) query["language"] = language
+        const response = await axios.get(`${ httpEndpoint }/cards/decks`, { params: query});
         return response.data;
       } catch (error) {
         //console.log(error)

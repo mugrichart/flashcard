@@ -33,7 +33,7 @@ const Yapping = ({ gameInfo, setGameInfo, userID, mode, storyGameUtils, setStory
     handleRefresh(deckId)
   }, [deckId])  
 
-  const [ storySettings, setStorySettings ] = useState( {} )
+  const [ storySettings, setStorySettings ] = useState( new StorySetup(gameInfo.data || {}) )
 
   const areObjValuesDifferent = (obj1, obj2, keys) => {
     if (Object.keys(obj1).length && Object.keys(obj2).length) return keys.map(k => obj1[k] !== obj2[k]).some(v => v)
